@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class HotConfig {
 
 	@Comment("If true, hot effects for items will be enabled")
-	public static boolean HOT_ITEMS = true;
+	public static boolean handleHotItems = true;
 
 	@Comment("If true, hot effects for fluids will be enabled")
 	public static boolean handleHotFluids = true;
@@ -27,7 +27,7 @@ public class HotConfig {
 	public static boolean renderEffectTooltip = true;
 
 	@Comment("If true, hot items make the player yeet them")
-	public static boolean YEET = true;
+	public static boolean tossItems = true;
 
 	@Comment("How hot a fluid should be to start burning the player (in Celsius)")
 	public static int hotFluidTemp = 480;

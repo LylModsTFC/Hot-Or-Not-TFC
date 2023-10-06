@@ -34,6 +34,10 @@ public final class HONItems {
 				new HotHolderItem("item.hotornot.mitts.tooltip")
 						.setMaxDamage(HotConfig.MITTS_DURABILITY)));
 
+		simpleItems.add(register(registry, "wooden_tongs",
+				new HotHolderItem("item.hotornot.wodden_tongs.tooltip")
+						.setMaxDamage(HotConfig.WOODEN_TONGS_DURABILITY)));
+
 		for (final Metal metal : TFCRegistries.METALS.getValuesCollection()) {
 			// Only make tongs for metals that make tools
 			if (!metal.isToolMetal()) continue;
