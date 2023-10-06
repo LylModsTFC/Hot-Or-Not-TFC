@@ -2,10 +2,19 @@ package com.buuz135.hotornot.config;
 
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nonnull;
+
 public class HotLists {
 
-	public static boolean isRemoved(ItemStack stack) {
-		String regName = stack.getItem().getRegistryName().toString();
+	/**
+	 * Checks if the stack is exempt from our checks
+	 *
+	 * @param itemStack The item stack to check
+	 *
+	 * @return If the item stack is exempt from the checks
+	 */
+	public static boolean isExempt(final @Nonnull ItemStack itemStack) {
+		final String regName = itemStack.getItem().getRegistryName().toString();
 		for (String s : HotConfig.ITEM_REMOVALS) {
 			if (regName.equals(s)) {
 				return true;
@@ -14,9 +23,16 @@ public class HotLists {
 		return false;
 	}
 
-	public static boolean isHot(ItemStack stack) {
-		String regName = stack.getItem().getRegistryName().toString();
-		for (String s : HotConfig.HOT_ITEM_ADDITIONS) {
+	/**
+	 * Checks if an item is hot
+	 *
+	 * @param itemStack The item stack to check
+	 *
+	 * @return If the item is hot
+	 */
+	public static boolean isHot(final @Nonnull ItemStack itemStack) {
+		final String regName = itemStack.getItem().getRegistryName().toString();
+		for (final String s : HotConfig.HOT_ITEM_ADDITIONS) {
 			if (regName.equals(s)) {
 				return true;
 			}
