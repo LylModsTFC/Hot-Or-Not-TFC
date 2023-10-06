@@ -6,18 +6,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class HotOrNotTab extends CreativeTabs
-{
-    public HotOrNotTab()
-    {
-        super(HotOrNot.MOD_ID);
-    }
+public class HotOrNotTab extends CreativeTabs {
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public ItemStack createIcon()
-    {
+	public HotOrNotTab() {
+		super(HotOrNot.MOD_ID);
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public ItemStack createIcon() {
 		//ToDo: Replace with TFC Blue Steel Lava Bucket
-        return new ItemStack(Items.LAVA_BUCKET);
-    }
+		return new ItemStack(Items.LAVA_BUCKET);
+	}
 }

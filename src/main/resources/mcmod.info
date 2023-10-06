@@ -10,13 +10,17 @@
     "authorList": [
       "Buuz135",
       "Affehund",
-      "ACGaming"
+      "ACGaming",
       "Lylythii"
     ],
     "credits": "",
     "logoFile": "hotornottfc.png",
-    "screenshots": [],
+    "requiredMods": [
+      "tfc"
+    ],
     "dependencies": [
-    ]
+      "tfc"
+    ],
+    "screenshots": []
   }
 ]
