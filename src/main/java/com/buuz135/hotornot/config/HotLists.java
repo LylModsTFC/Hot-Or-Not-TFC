@@ -12,6 +12,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @ParametersAreNonnullByDefault
 public final class HotLists {
@@ -21,21 +22,22 @@ public final class HotLists {
 	private static final List<Item> gaseousList = new ArrayList<>();
 	private static final List<Item> exemptionList = new ArrayList<>();
 
-	/**
-	 * Only call this from the server side. The server initializes these lists on the client when it connects
-	 */
 	public static void init() {
 		Arrays.stream(HotConfig.MANUAL_ENTRIES.itemRemovals)
-				.map(itemRegistryName -> Item.REGISTRY.getObject(new ResourceLocation(itemRegistryName)))
+				.map(itemRemoval -> Item.REGISTRY.getObject(new ResourceLocation(itemRemoval)))
+				.filter(Objects::nonNull)
 				.forEach(exemptionList::add);
 		Arrays.stream(HotConfig.MANUAL_ENTRIES.hotItemAdditions)
 				.map(itemRegistryName -> Item.REGISTRY.getObject(new ResourceLocation(itemRegistryName)))
+				.filter(Objects::nonNull)
 				.forEach(hotList::add);
 		Arrays.stream(HotConfig.MANUAL_ENTRIES.coldItemAdditions)
 				.map(itemRegistryName -> Item.REGISTRY.getObject(new ResourceLocation(itemRegistryName)))
+				.filter(Objects::nonNull)
 				.forEach(coldList::add);
 		Arrays.stream(HotConfig.MANUAL_ENTRIES.gaseousItemAdditions)
 				.map(itemRegistryName -> Item.REGISTRY.getObject(new ResourceLocation(itemRegistryName)))
+				.filter(Objects::nonNull)
 				.forEach(gaseousList::add);
 	}
 
