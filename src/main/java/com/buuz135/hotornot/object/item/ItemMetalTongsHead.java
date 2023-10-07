@@ -5,7 +5,6 @@ import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.items.ItemTFC;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import java.util.HashMap;
@@ -30,7 +29,7 @@ public class ItemMetalTongsHead extends ItemTFC implements IMetalItem {
 	 *
 	 * @return Item instance for the given metal type
 	 */
-	public static Item get(final Metal metal) {
+	public static ItemMetalTongsHead get(final Metal metal) {
 		return TONGS_HEAD_MAP.get(metal);
 	}
 

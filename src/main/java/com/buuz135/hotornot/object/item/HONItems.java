@@ -41,8 +41,8 @@ public final class HONItems {
 			// Only make tongs for metals that make tools
 			if (!metal.isToolMetal()) continue;
 
-			simpleItems.add(register(registry, metal + "_tongs", new ItemMetalTongs(metal)));
-			simpleItems.add(register(registry, metal + "_tongs_head", new ItemMetalTongsHead(metal)));
+			simpleItems.add(register(registry, "metal/tongs/" + metal, new ItemMetalTongs(metal)));
+			simpleItems.add(register(registry, "metal/tongs_head/" + metal, new ItemMetalTongsHead(metal)));
 		}
 
 		allSimpleItems = simpleItems.build();

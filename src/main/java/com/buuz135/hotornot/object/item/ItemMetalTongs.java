@@ -9,9 +9,12 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ItemMetalTongs extends ItemHotHolder implements IMetalItem {
 
+	private static final Map<Metal, ItemMetalTongs> TONGS_MAP = new HashMap<>();
 	private final Metal metal;
 
 	/**
@@ -20,8 +23,22 @@ public class ItemMetalTongs extends ItemHotHolder implements IMetalItem {
 	public ItemMetalTongs(final Metal metal) {
 		super(metal.getTier());
 		this.metal = metal;
+
+		TONGS_MAP.put(metal, this);
+
 		//noinspection DataFlowIssue
 		setMaxDamage((int) (metal.getToolMetal().getMaxUses() * 1.8));
+	}
+
+	/**
+	 * Gets the Tongs item for the metal MUST BE A TOOL METAL
+	 *
+	 * @param metal Metal type to get
+	 *
+	 * @return Item instance for the given metal type
+	 */
+	public static ItemMetalTongs get(final Metal metal) {
+		return TONGS_MAP.get(metal);
 	}
 
 	@Override
