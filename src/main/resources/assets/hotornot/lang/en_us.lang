@@ -1,47 +1,23 @@
 # Tooltips
 tooltip.hotornot.toohot=Too hot to handle! Wear protection.
 tooltip.hotornot.toocold=Too cold to handle! Wear protection.
-tooltip.hotornot.toolight=Too light to handle! Wear protection.
-
+tooltip.hotornot.toolight=Too light to handle!
+tooltip.hotornot.hot_holder_tooltip=Hold in the offhand to avoid negative effects
 
 # Creative Tab
 itemGroup.hotornot=Hot or Not - TFC
 
-
-# Wooden Tongs
+## Items
 item.hotornot.wooden_tongs.name=Wooden Tongs
-item.hotornot.wooden_tongs.tooltip=Tier I - Wear in the offhand to avoid bad effects
-
-
-# Mitts
 item.hotornot.mitts.name=Mitts
-item.hotornot.mitts.tooltip=Tier II - Wear in the offhand to avoid bad effects
 
-
-# Tong Tiers
+# Metal tongs
 item.hotornot.copper_tongs.name=Copper Tongs
-item.hotornot.copper_tongs.tooltip=Tier I - Wear in the offhand to avoid bad effects
-
 item.hotornot.bronze_tongs.name=Bronze Tongs
-item.hotornot.bronze_tongs.tooltip=Tier II - Wear in the offhand to avoid bad effects
-
 item.hotornot.bismuth_bronze_tongs.name=Bismuth Bronze Tongs
-item.hotornot.bismuth_bronze_tongs.tooltip=Tier II - Wear in the offhand to avoid bad effects
-
 item.hotornot.black_bronze_tongs.name=Black Bronze Tongs
-item.hotornot.black_bronze_tongs.tooltip=Tier II - Wear in the offhand to avoid bad effects
-
 item.hotornot.wrought_iron_tongs.name=Wrought Iron Tongs
-item.hotornot.wrought_iron_tongs.tooltip=Tier III - Wear in the offhand to avoid bad effects
-
 item.hotornot.steel_tongs.name=Steel Tongs
-item.hotornot.steel_tongs.tooltip=Tier IV - Wear in the offhand to avoid bad effects
-
 item.hotornot.black_steel_tongs.name=Black Steel Tongs
-item.hotornot.black_steel_tongs.tooltip=Tier V - Wear in the offhand to avoid bad effects
-
 item.hotornot.red_steel_tongs.name=Red Steel Tongs
-item.hotornot.red_steel_tongs.tooltip=Tier VI - Wear in the offhand to avoid bad effects
-
 item.hotornot.blue_steel_tongs.name=Blue Steel Tongs
-item.hotornot.blue_steel_tongs.tooltip=Tier VI - Wear in the offhand to avoid bad effects

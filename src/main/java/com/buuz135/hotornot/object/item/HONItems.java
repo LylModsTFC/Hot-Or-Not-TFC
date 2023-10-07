@@ -1,11 +1,11 @@
 package com.buuz135.hotornot.object.item;
 
-import com.buuz135.hotornot.HotOrNot;
 import com.buuz135.hotornot.config.HotConfig;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.api.types.Metal.Tier;
 import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -18,7 +18,6 @@ import static com.buuz135.hotornot.HotOrNot.MOD_ID;
 @EventBusSubscriber(modid = MOD_ID)
 public final class HONItems {
 
-
 	private static ImmutableList<Item> allSimpleItems;
 
 	public static ImmutableList<Item> getAllSimpleItems() {
@@ -30,52 +29,19 @@ public final class HONItems {
 		final IForgeRegistry<Item> registry = event.getRegistry();
 		final Builder<Item> simpleItems = ImmutableList.builder();
 
-		simpleItems.add(register(registry, "mitts",
-				new HotHolderItem("item.hotornot.mitts.tooltip")
-						.setMaxDamage(HotConfig.MITTS_DURABILITY)));
-
 		simpleItems.add(register(registry, "wooden_tongs",
-				new HotHolderItem("item.hotornot.wodden_tongs.tooltip")
+				new HotHolderItem(Tier.TIER_0)
 						.setMaxDamage(HotConfig.WOODEN_TONGS_DURABILITY)));
+
+		simpleItems.add(register(registry, "mitts",
+				new HotHolderItem(Tier.TIER_II)
+						.setMaxDamage(HotConfig.MITTS_DURABILITY)));
 
 		for (final Metal metal : TFCRegistries.METALS.getValuesCollection()) {
 			// Only make tongs for metals that make tools
 			if (!metal.isToolMetal()) continue;
 
-			final int maxDamage;
-			switch (metal.getTier()) {
-				case TIER_0:
-					maxDamage = 1;
-					break;
-				case TIER_I:
-					maxDamage = 1_000;
-					break;
-				case TIER_II:
-					maxDamage = 2_000;
-					break;
-				case TIER_III:
-					maxDamage = 3_000;
-					break;
-				case TIER_IV:
-					maxDamage = 4_000;
-					break;
-				case TIER_V:
-					maxDamage = 6_000;
-					break;
-				case TIER_VI:
-					maxDamage = 12_000;
-					break;
-				default:
-					HotOrNot.getLog().warn("Illegal Metal Tier {}, defaulting to 0", metal.getTier());
-					maxDamage = 1;
-					break;
-			}
-
-			//noinspection DataFlowIssue
-			final String name = metal.getRegistryName().getPath();
-			simpleItems.add(register(registry, name + "_tongs",
-					new HotHolderItem("item.hotornot." + name + "_tongs.tooltip")
-							.setMaxDamage(maxDamage)));
+			simpleItems.add(register(registry, metal + "_tongs", new MetalTongsItem(metal)));
 		}
 
 		allSimpleItems = simpleItems.build();

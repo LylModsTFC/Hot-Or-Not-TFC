@@ -1,43 +1,52 @@
 package com.buuz135.hotornot.object.item;
 
-import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
+import net.dries007.tfc.api.types.Metal.Tier;
+import net.dries007.tfc.objects.items.ItemTFC;
+import net.dries007.tfc.util.Helpers;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class HotHolderItem extends Item implements IItemSize {
+public class HotHolderItem extends ItemTFC {
 
-	private final String tooltipKey;
+	private final Tier tier;
 
-	public HotHolderItem(final String tooltipKey) {
-		this.tooltipKey = tooltipKey;
+	/**
+	 * @param tier A TFC metal tier to easily display our tier levels
+	 */
+	public HotHolderItem(final Tier tier) {
+		this.tier = tier;
 		setMaxStackSize(1);
 	}
 
 	@Override
 	public void addInformation(final ItemStack itemStack, final @Nullable World world, final List<String> tooltip, final ITooltipFlag tooltipFlag) {
-		tooltip.add(new TextComponentTranslation(tooltipKey).getUnformattedComponentText());
+		tooltip.add(I18n.format(Helpers.getEnumName(tier)) + " - " + I18n.format("tooltip.hotornot.hot_holder_tooltip"));
 	}
 
 	@Override
-	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+	public boolean shouldCauseReequipAnimation(final ItemStack oldStack, final ItemStack newStack, final boolean slotChanged) {
 		return false;
 	}
 
 	@Override
 	public Size getSize(final ItemStack itemStack) {
-		return Size.NORMAL;
+		return Size.VERY_LARGE;
 	}
 
 	@Override
 	public Weight getWeight(final ItemStack itemStack) {
-		return Weight.LIGHT;
+		return Weight.HEAVY;
+	}
+
+	@Override
+	public boolean canStack(final ItemStack itemStack) {
+		return false;
 	}
 }

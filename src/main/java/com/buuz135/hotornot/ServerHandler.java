@@ -15,14 +15,22 @@ import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
+@ParametersAreNonnullByDefault
 @EventBusSubscriber(modid = HotOrNot.MOD_ID)
 public class ServerHandler {
 
+	@SubscribeEvent
+	public static void onPlayerLogin(final PlayerLoggedInEvent event) {
+		// TODO sync config to client
+	}
 
 	@SubscribeEvent
 	public static void onTick(final WorldTickEvent event) {
@@ -34,6 +42,7 @@ public class ServerHandler {
 			final IItemHandler playerItemHandler = player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 			// If players don't have the item handler capability somebody did some nasty mixin and messed things up for more than just us
 			assert playerItemHandler != null;
+
 			for (int playerSlotIndex = 0; playerSlotIndex < playerItemHandler.getSlots(); playerSlotIndex++) {
 				final ItemStack slotStack = playerItemHandler.getStackInSlot(playerSlotIndex);
 
@@ -96,7 +105,7 @@ public class ServerHandler {
 					}
 				}
 
-				// Items from config
+				// Items added to manual hot config
 				if (HotLists.isHot(slotStack)) {
 					final ItemStack heldItemOffhand = player.getHeldItemOffhand();
 
@@ -111,9 +120,10 @@ public class ServerHandler {
 							player.dropItem(extractedStack, false, true);
 						}
 					}
-					return;
+					continue;
 				}
 
+				// Items added to manual cold config
 				if (HotLists.isCold(slotStack)) {
 					final ItemStack heldItemOffhand = player.getHeldItemOffhand();
 
@@ -124,9 +134,10 @@ public class ServerHandler {
 						player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 21, 1));
 						player.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 21, 1));
 					}
-					return;
+					continue;
 				}
 
+				// Items added to manual gas config
 				if (HotLists.isGaseous(slotStack)) {
 					if (event.world.getTotalWorldTime() % 10 == 0) {
 						player.addPotionEffect(new PotionEffect(MobEffects.LEVITATION, 21, 1));
