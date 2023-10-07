@@ -20,31 +20,8 @@ public class ItemMetalTongs extends ItemHotHolder implements IMetalItem {
 	public ItemMetalTongs(final Metal metal) {
 		super(metal.getTier());
 		this.metal = metal;
-
-		// Set max damage depending on tier
-		switch (metal.getTier()) {
-			case TIER_0:
-				setMaxDamage(1);
-				break;
-			case TIER_I:
-				setMaxDamage(1_000);
-				break;
-			case TIER_II:
-				setMaxDamage(2_000);
-				break;
-			case TIER_III:
-				setMaxDamage(3_000);
-				break;
-			case TIER_IV:
-				setMaxDamage(4_000);
-				break;
-			case TIER_V:
-				setMaxDamage(6_000);
-				break;
-			case TIER_VI:
-				setMaxDamage(12_000);
-				break;
-		}
+		//noinspection DataFlowIssue
+		setMaxDamage((int) (metal.getToolMetal().getMaxUses() * 1.8));
 	}
 
 	@Override
