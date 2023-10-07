@@ -31,7 +31,7 @@ public class ItemMetalTongs extends ItemHotHolder implements IMetalItem {
 
 	@Override
 	public int getSmeltAmount(final ItemStack itemStack) {
-		// They are worth 100 units
+		// They are worth 200 units
 		if (!isDamageable() || !itemStack.isItemDamaged()) return 200;
 
 		final double damagePercent = (double) (itemStack.getMaxDamage() - itemStack.getItemDamage()) / itemStack.getMaxDamage() - 0.1D;

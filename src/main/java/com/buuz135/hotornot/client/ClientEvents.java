@@ -7,7 +7,6 @@ import com.buuz135.hotornot.config.HotLists;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -44,31 +43,28 @@ public final class ClientEvents {
 
 				event.getToolTip().add(effect.getTooltip());
 			}
-			return;
 		}
 
-		if (HotLists.isHot(itemStack)) {
-			event.getToolTip().add(FluidEffect.HOT.color + new TextComponentTranslation(FluidEffect.HOT.tooltip).getUnformattedText());
-			return;
-		}
-
-		if (HotLists.isCold(itemStack)) {
-			event.getToolTip().add(FluidEffect.COLD.color + new TextComponentTranslation(FluidEffect.COLD.tooltip).getUnformattedText());
-			return;
-		}
-
-		if (HotLists.isGaseous(itemStack)) {
-			event.getToolTip().add(FluidEffect.GAS.color + new TextComponentTranslation(FluidEffect.GAS.tooltip).getUnformattedText());
-			return;
-		}
-
+		// TFC heat capability
 		if (itemStack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null)) {
 			final IItemHeat heat = itemStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
 			assert heat != null;
 
 			if (heat.getTemperature() >= HotConfig.hotItemTemp) {
-				event.getToolTip().add(FluidEffect.HOT.color + new TextComponentTranslation(FluidEffect.HOT.tooltip).getUnformattedText());
+				event.getToolTip().add(FluidEffect.HOT.getTooltip());
 			}
+		}
+
+		if (HotLists.isHot(itemStack)) {
+			event.getToolTip().add(FluidEffect.HOT.getTooltip());
+		}
+
+		if (HotLists.isCold(itemStack)) {
+			event.getToolTip().add(FluidEffect.COLD.getTooltip());
+		}
+
+		if (HotLists.isGaseous(itemStack)) {
+			event.getToolTip().add(FluidEffect.GAS.getTooltip());
 		}
 	}
 }

@@ -2,6 +2,7 @@ package com.buuz135.hotornot;
 
 import com.buuz135.hotornot.config.HotConfig;
 import com.buuz135.hotornot.config.HotLists;
+import com.buuz135.hotornot.network.SyncClientLists;
 import com.buuz135.hotornot.object.item.ItemHotHolder;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
@@ -29,7 +30,9 @@ public class ServerHandler {
 
 	@SubscribeEvent
 	public static void onPlayerLogin(final PlayerLoggedInEvent event) {
-		// TODO sync config to client
+
+		HotOrNot.getNetwork().sendTo(new SyncClientLists(), (EntityPlayerMP) event.player);
+		HotOrNot.getLog().info("Synced server lists with {}", event.player);
 	}
 
 	@SubscribeEvent
