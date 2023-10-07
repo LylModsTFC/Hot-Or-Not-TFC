@@ -2,7 +2,7 @@ package com.buuz135.hotornot;
 
 import com.buuz135.hotornot.config.HotConfig;
 import com.buuz135.hotornot.config.HotLists;
-import com.buuz135.hotornot.object.item.HotHolderItem;
+import com.buuz135.hotornot.object.item.ItemHotHolder;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -67,7 +67,7 @@ public class ServerHandler {
 
 						final ItemStack heldItemOffhand = player.getHeldItemOffhand();
 
-						if (heldItemOffhand.getItem() instanceof HotHolderItem) {
+						if (heldItemOffhand.getItem() instanceof ItemHotHolder) {
 							heldItemOffhand.damageItem(1, player);
 							// Try to toss an item every 20 ticks (1 second)
 						} else if (event.world.getTotalWorldTime() % 20 == 0) {
@@ -92,7 +92,7 @@ public class ServerHandler {
 
 						final ItemStack heldItemOffhand = player.getHeldItemOffhand();
 
-						if (heldItemOffhand.getItem() instanceof HotHolderItem) {
+						if (heldItemOffhand.getItem() instanceof ItemHotHolder) {
 							heldItemOffhand.damageItem(1, player);
 							// Try to toss an item every 10 ticks (0.5 seconds)
 						} else if (event.world.getTotalWorldTime() % 10 == 0) {
@@ -109,7 +109,7 @@ public class ServerHandler {
 				if (HotLists.isHot(slotStack)) {
 					final ItemStack heldItemOffhand = player.getHeldItemOffhand();
 
-					if (heldItemOffhand.getItem() instanceof HotHolderItem) {
+					if (heldItemOffhand.getItem() instanceof ItemHotHolder) {
 						heldItemOffhand.damageItem(1, player);
 
 						// Try to toss an item every 10 ticks (0.5 seconds)
@@ -127,7 +127,7 @@ public class ServerHandler {
 				if (HotLists.isCold(slotStack)) {
 					final ItemStack heldItemOffhand = player.getHeldItemOffhand();
 
-					if (heldItemOffhand.getItem() instanceof HotHolderItem) {
+					if (heldItemOffhand.getItem() instanceof ItemHotHolder) {
 						heldItemOffhand.damageItem(1, player);
 						// Try to toss an item every 10 ticks (0.5 seconds)
 					} else if (event.world.getTotalWorldTime() % 10 == 0) {

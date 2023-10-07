@@ -10,14 +10,14 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import javax.annotation.Nullable;
 
-public class MetalTongsItem extends HotHolderItem implements IMetalItem {
+public class ItemMetalTongs extends ItemHotHolder implements IMetalItem {
 
 	private final Metal metal;
 
 	/**
 	 * @param metal The Metal type these tongs are
 	 */
-	public MetalTongsItem(final Metal metal) {
+	public ItemMetalTongs(final Metal metal) {
 		super(metal.getTier());
 		this.metal = metal;
 
@@ -55,10 +55,10 @@ public class MetalTongsItem extends HotHolderItem implements IMetalItem {
 	@Override
 	public int getSmeltAmount(final ItemStack itemStack) {
 		// They are worth 100 units
-		if (!isDamageable() || !itemStack.isItemDamaged()) return 100;
+		if (!isDamageable() || !itemStack.isItemDamaged()) return 200;
 
 		final double damagePercent = (double) (itemStack.getMaxDamage() - itemStack.getItemDamage()) / itemStack.getMaxDamage() - 0.1D;
-		return damagePercent < 0 ? 0 : MathHelper.floor(100 * damagePercent);
+		return damagePercent < 0 ? 0 : MathHelper.floor(200 * damagePercent);
 	}
 
 	@Override

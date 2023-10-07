@@ -30,18 +30,19 @@ public final class HONItems {
 		final Builder<Item> simpleItems = ImmutableList.builder();
 
 		simpleItems.add(register(registry, "wooden_tongs",
-				new HotHolderItem(Tier.TIER_0)
+				new ItemHotHolder(Tier.TIER_0)
 						.setMaxDamage(HotConfig.WOODEN_TONGS_DURABILITY)));
 
 		simpleItems.add(register(registry, "mitts",
-				new HotHolderItem(Tier.TIER_II)
+				new ItemHotHolder(Tier.TIER_II)
 						.setMaxDamage(HotConfig.MITTS_DURABILITY)));
 
 		for (final Metal metal : TFCRegistries.METALS.getValuesCollection()) {
 			// Only make tongs for metals that make tools
 			if (!metal.isToolMetal()) continue;
 
-			simpleItems.add(register(registry, metal + "_tongs", new MetalTongsItem(metal)));
+			simpleItems.add(register(registry, metal + "_tongs", new ItemMetalTongs(metal)));
+			simpleItems.add(register(registry, metal + "_tongs_head", new ItemMetalTongsHead(metal)));
 		}
 
 		allSimpleItems = simpleItems.build();

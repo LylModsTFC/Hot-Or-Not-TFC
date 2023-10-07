@@ -13,14 +13,14 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class HotHolderItem extends ItemTFC {
+public class ItemHotHolder extends ItemTFC {
 
 	private final Tier tier;
 
 	/**
 	 * @param tier A TFC metal tier to easily display our tier levels
 	 */
-	public HotHolderItem(final Tier tier) {
+	public ItemHotHolder(final Tier tier) {
 		this.tier = tier;
 		setMaxStackSize(1);
 	}
