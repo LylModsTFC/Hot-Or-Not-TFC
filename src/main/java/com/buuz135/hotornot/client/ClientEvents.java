@@ -6,6 +6,7 @@ import com.buuz135.hotornot.config.HotConfig;
 import com.buuz135.hotornot.config.HotLists;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fluids.FluidStack;
@@ -22,14 +23,16 @@ public final class ClientEvents {
 
 	@SubscribeEvent
 	public static void onItemTooltip(final ItemTooltipEvent event) {
+		// Quit early if we shouldn't add a tooltip
+		if (!HotConfig.renderEffectTooltip) return;
+
 		final ItemStack itemStack = event.getItemStack();
 
 		if (itemStack.isEmpty()) return;
 
 		if (HotLists.isExempt(itemStack)) return;
 
-		if (!HotConfig.renderEffectTooltip) return;
-
+		// Fluid item container
 		if (itemStack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
 			final IFluidHandlerItem fluidHandler = itemStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
 			assert fluidHandler != null;
@@ -39,9 +42,9 @@ public final class ClientEvents {
 			if (fluidStack == null) return;
 
 			for (final FluidEffect effect : FluidEffect.values()) {
-				if (!effect.isValid.test(fluidStack)) continue;
+				if (!effect.isValid(fluidStack)) continue;
 
-				event.getToolTip().add(effect.getTooltip());
+				event.getToolTip().add(effect.color + I18n.format(effect.tooltip));
 			}
 		}
 
@@ -51,20 +54,20 @@ public final class ClientEvents {
 			assert heat != null;
 
 			if (heat.getTemperature() >= HotConfig.hotItemTemp) {
-				event.getToolTip().add(FluidEffect.HOT.getTooltip());
+				event.getToolTip().add(FluidEffect.HOT.color + I18n.format(FluidEffect.HOT.tooltip));
 			}
 		}
 
 		if (HotLists.isHot(itemStack)) {
-			event.getToolTip().add(FluidEffect.HOT.getTooltip());
+			event.getToolTip().add(FluidEffect.HOT.color + I18n.format(FluidEffect.HOT.tooltip));
 		}
 
 		if (HotLists.isCold(itemStack)) {
-			event.getToolTip().add(FluidEffect.COLD.getTooltip());
+			event.getToolTip().add(FluidEffect.COLD.color + I18n.format(FluidEffect.COLD.tooltip));
 		}
 
 		if (HotLists.isGaseous(itemStack)) {
-			event.getToolTip().add(FluidEffect.GAS.getTooltip());
+			event.getToolTip().add(FluidEffect.GAS.color + I18n.format(FluidEffect.GAS.tooltip));
 		}
 	}
 }

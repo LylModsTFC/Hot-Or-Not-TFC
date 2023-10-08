@@ -53,7 +53,7 @@ public class HotConfig {
 	public static int WOODEN_TONGS_DURABILITY = 120;
 
 	@Comment("Max durability of the mitts, 0 for infinite durability")
-	public static int MITTS_DURABILITY = 12000;
+	public static int MITTS_DURABILITY = 12_000;
 
 	@SubscribeEvent
 	public static void onConfigChanged(final OnConfigChangedEvent event) {

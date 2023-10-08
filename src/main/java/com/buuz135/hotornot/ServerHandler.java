@@ -32,7 +32,7 @@ public class ServerHandler {
 	public static void onPlayerLogin(final PlayerLoggedInEvent event) {
 
 		HotOrNot.getNetwork().sendTo(new SyncClientLists(), (EntityPlayerMP) event.player);
-		HotOrNot.getLog().info("Synced server lists with {}", event.player);
+		HotOrNot.getLog().info("Synced server lists with {}", event.player.getName());
 	}
 
 	@SubscribeEvent
@@ -66,12 +66,13 @@ public class ServerHandler {
 					if (fluidStack == null) continue;
 
 					for (final FluidEffect effect : FluidEffect.values()) {
-						if (!effect.isValid.test(fluidStack)) continue;
+						if (!effect.isValid(fluidStack)) continue;
 
 						final ItemStack heldItemOffhand = player.getHeldItemOffhand();
 
 						if (heldItemOffhand.getItem() instanceof ItemHotHolder) {
 							heldItemOffhand.damageItem(1, player);
+
 							// Try to toss an item every 20 ticks (1 second)
 						} else if (event.world.getTotalWorldTime() % 20 == 0) {
 							effect.interactPlayer.accept(player);
@@ -97,7 +98,8 @@ public class ServerHandler {
 
 						if (heldItemOffhand.getItem() instanceof ItemHotHolder) {
 							heldItemOffhand.damageItem(1, player);
-							// Try to toss an item every 10 ticks (0.5 seconds)
+
+							// Try to toss an item every 20 ticks (1 second)
 						} else if (event.world.getTotalWorldTime() % 10 == 0) {
 							player.setFire(1);
 							if (HotConfig.tossItems) {
@@ -115,8 +117,8 @@ public class ServerHandler {
 					if (heldItemOffhand.getItem() instanceof ItemHotHolder) {
 						heldItemOffhand.damageItem(1, player);
 
-						// Try to toss an item every 10 ticks (0.5 seconds)
-					} else if (event.world.getTotalWorldTime() % 10 == 0) {
+						// Try to toss an item every 20 ticks (1 second)
+					} else if (event.world.getTotalWorldTime() % 20 == 0) {
 						player.setFire(1);
 						if (HotConfig.tossItems) {
 							final ItemStack extractedStack = playerItemHandler.extractItem(playerSlotIndex, slotStack.getCount(), false);
@@ -132,7 +134,6 @@ public class ServerHandler {
 
 					if (heldItemOffhand.getItem() instanceof ItemHotHolder) {
 						heldItemOffhand.damageItem(1, player);
-						// Try to toss an item every 10 ticks (0.5 seconds)
 					} else if (event.world.getTotalWorldTime() % 10 == 0) {
 						player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 21, 1));
 						player.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 21, 1));

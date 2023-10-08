@@ -22,6 +22,10 @@ public class ItemMetalTongs extends ItemHotHolder implements IMetalItem {
 	 */
 	public ItemMetalTongs(final Metal metal) {
 		super(metal.getTier());
+
+		// Go kaboom if metal isn't for tools
+		if (!metal.isToolMetal()) throw new IllegalArgumentException("You can't make tongs out of non tool metals.");
+
 		this.metal = metal;
 
 		TONGS_MAP.put(metal, this);
