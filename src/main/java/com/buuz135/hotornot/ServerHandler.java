@@ -4,6 +4,7 @@ import com.buuz135.hotornot.config.HotConfig;
 import com.buuz135.hotornot.config.HotLists;
 import com.buuz135.hotornot.network.SyncClientLists;
 import com.buuz135.hotornot.object.item.ItemHotHolder;
+import com.buuz135.hotornot.util.FluidEffect;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.minecraft.entity.player.EntityPlayerMP;

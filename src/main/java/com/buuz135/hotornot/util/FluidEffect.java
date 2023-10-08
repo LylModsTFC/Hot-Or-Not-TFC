@@ -1,4 +1,4 @@
-package com.buuz135.hotornot;
+package com.buuz135.hotornot.util;
 
 import com.buuz135.hotornot.config.HotConfig;
 import net.minecraft.entity.player.EntityPlayerMP;

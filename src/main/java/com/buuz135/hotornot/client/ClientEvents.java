@@ -1,6 +1,6 @@
 package com.buuz135.hotornot.client;
 
-import com.buuz135.hotornot.FluidEffect;
+import com.buuz135.hotornot.util.FluidEffect;
 import com.buuz135.hotornot.HotOrNot;
 import com.buuz135.hotornot.config.HotConfig;
 import com.buuz135.hotornot.config.HotLists;

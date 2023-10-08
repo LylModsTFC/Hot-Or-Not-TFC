@@ -1,5 +1,6 @@
-package com.buuz135.hotornot;
+package com.buuz135.hotornot.util;
 
+import com.buuz135.hotornot.HotOrNot;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;

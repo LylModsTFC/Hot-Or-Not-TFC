@@ -1,4 +1,4 @@
-package com.buuz135.hotornot;
+package com.buuz135.hotornot.types;
 
 import com.buuz135.hotornot.object.item.ItemMetalTongsHead;
 import net.dries007.tfc.api.recipes.anvil.AnvilRecipe;
