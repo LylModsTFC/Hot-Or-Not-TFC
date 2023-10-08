@@ -3,6 +3,7 @@ package com.buuz135.hotornot.config;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.Config.Comment;
 import net.minecraftforge.common.config.Config.LangKey;
+import net.minecraftforge.common.config.Config.RangeInt;
 import net.minecraftforge.common.config.Config.Type;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
@@ -38,7 +39,7 @@ public class HotConfig {
 	public static boolean renderEffectTooltip = true;
 
 	@Comment("If true, hot items make the player yeet them")
-	public static boolean tossItems = true;
+	public static boolean tossItems = false;
 
 	@Comment("How hot a fluid should be to start burning the player (in Celsius)")
 	public static int hotFluidTemp = 480;
@@ -49,11 +50,9 @@ public class HotConfig {
 	@Comment("How hot an item should be to start burning the player (in Celsius)")
 	public static int hotItemTemp = 480;
 
-	@Comment("Max durability of the wooden tongs, 0 for infinite durability")
-	public static int WOODEN_TONGS_DURABILITY = 120;
-
-	@Comment("Max durability of the mitts, 0 for infinite durability")
-	public static int MITTS_DURABILITY = 12_000;
+	@RangeInt(min = 0)
+	@Comment("How often the tools should be damaged in ticks (there are 20 ticks per second). 0 will disable the damaging functionality")
+	public static int damageRate = 1;
 
 	@SubscribeEvent
 	public static void onConfigChanged(final OnConfigChangedEvent event) {

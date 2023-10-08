@@ -46,6 +46,11 @@ public class ServerHandler {
 			// If players don't have the item handler capability somebody did some nasty mixin and messed things up for more than just us
 			assert playerItemHandler != null;
 
+
+			final ItemStack heldItemOffhand = player.getHeldItemOffhand();
+
+			final boolean hasHotHolder = heldItemOffhand.getItem() instanceof ItemHotHolder;
+			boolean damageHotHolder = false;
 			for (int playerSlotIndex = 0; playerSlotIndex < playerItemHandler.getSlots(); playerSlotIndex++) {
 				final ItemStack slotStack = playerItemHandler.getStackInSlot(playerSlotIndex);
 
@@ -68,13 +73,13 @@ public class ServerHandler {
 					for (final FluidEffect effect : FluidEffect.values()) {
 						if (!effect.isValid(fluidStack)) continue;
 
-						final ItemStack heldItemOffhand = player.getHeldItemOffhand();
+						if (hasHotHolder) {
+							damageHotHolder = true;
+							break;
+						}
 
-						if (heldItemOffhand.getItem() instanceof ItemHotHolder) {
-							heldItemOffhand.damageItem(1, player);
-
-							// Try to toss an item every 20 ticks (1 second)
-						} else if (event.world.getTotalWorldTime() % 20 == 0) {
+						// Try to toss an item every 20 ticks (1 second)
+						if (event.world.getTotalWorldTime() % 20 == 0) {
 							effect.interactPlayer.accept(player);
 							if (HotConfig.tossItems) {
 								final ItemStack extractedStack = playerItemHandler.extractItem(playerSlotIndex, slotStack.getCount(), false);
@@ -94,13 +99,13 @@ public class ServerHandler {
 
 					if (itemHeat.getTemperature() >= HotConfig.hotItemTemp) {
 
-						final ItemStack heldItemOffhand = player.getHeldItemOffhand();
+						if (hasHotHolder) {
+							damageHotHolder = true;
+							break;
+						}
 
-						if (heldItemOffhand.getItem() instanceof ItemHotHolder) {
-							heldItemOffhand.damageItem(1, player);
-
-							// Try to toss an item every 20 ticks (1 second)
-						} else if (event.world.getTotalWorldTime() % 10 == 0) {
+						// Try to toss an item every 20 ticks (1 second)
+						if (event.world.getTotalWorldTime() % 20 == 0) {
 							player.setFire(1);
 							if (HotConfig.tossItems) {
 								final ItemStack extractedStack = playerItemHandler.extractItem(playerSlotIndex, slotStack.getCount(), false);
@@ -112,13 +117,14 @@ public class ServerHandler {
 
 				// Items added to manual hot config
 				if (HotLists.isHot(slotStack)) {
-					final ItemStack heldItemOffhand = player.getHeldItemOffhand();
 
-					if (heldItemOffhand.getItem() instanceof ItemHotHolder) {
-						heldItemOffhand.damageItem(1, player);
+					if (hasHotHolder) {
+						damageHotHolder = true;
+						break;
+					}
 
-						// Try to toss an item every 20 ticks (1 second)
-					} else if (event.world.getTotalWorldTime() % 20 == 0) {
+					// Try to toss an item every 20 ticks (1 second)
+					if (event.world.getTotalWorldTime() % 20 == 0) {
 						player.setFire(1);
 						if (HotConfig.tossItems) {
 							final ItemStack extractedStack = playerItemHandler.extractItem(playerSlotIndex, slotStack.getCount(), false);
@@ -130,11 +136,13 @@ public class ServerHandler {
 
 				// Items added to manual cold config
 				if (HotLists.isCold(slotStack)) {
-					final ItemStack heldItemOffhand = player.getHeldItemOffhand();
 
-					if (heldItemOffhand.getItem() instanceof ItemHotHolder) {
-						heldItemOffhand.damageItem(1, player);
-					} else if (event.world.getTotalWorldTime() % 10 == 0) {
+					if (hasHotHolder) {
+						damageHotHolder = true;
+						break;
+					}
+
+					if (event.world.getTotalWorldTime() % 20 == 0) {
 						player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 21, 1));
 						player.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 21, 1));
 					}
@@ -143,9 +151,25 @@ public class ServerHandler {
 
 				// Items added to manual gas config
 				if (HotLists.isGaseous(slotStack)) {
-					if (event.world.getTotalWorldTime() % 10 == 0) {
+
+					if (hasHotHolder) {
+						damageHotHolder = true;
+						break;
+					}
+
+					if (event.world.getTotalWorldTime() % 20 == 0) {
 						player.addPotionEffect(new PotionEffect(MobEffects.LEVITATION, 21, 1));
 					}
+				}
+			}
+
+			// Damage the item only once, no matter how many effects we prevent
+			if (hasHotHolder && damageHotHolder) {
+				// Prevent divide by 0 & disable the tool damage functionality
+				if (HotConfig.damageRate == 0) continue;
+
+				if (event.world.getTotalWorldTime() % HotConfig.damageRate == 0) {
+					heldItemOffhand.damageItem(1, player);
 				}
 			}
 		}

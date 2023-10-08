@@ -1,6 +1,5 @@
 package com.buuz135.hotornot.object.item;
 
-import com.buuz135.hotornot.config.HotConfig;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 import net.dries007.tfc.api.registries.TFCRegistries;
@@ -31,11 +30,11 @@ public final class HONItems {
 
 		simpleItems.add(register(registry, "wooden_tongs",
 				new ItemHotHolder(Tier.TIER_0)
-						.setMaxDamage(HotConfig.WOODEN_TONGS_DURABILITY)));
+						.setMaxDamage(200)));
 
 		simpleItems.add(register(registry, "mitts",
 				new ItemHotHolder(Tier.TIER_II)
-						.setMaxDamage(HotConfig.MITTS_DURABILITY)));
+						.setMaxDamage(5_000)));
 
 		for (final Metal metal : TFCRegistries.METALS.getValuesCollection()) {
 			// Only make tongs for metals that make tools

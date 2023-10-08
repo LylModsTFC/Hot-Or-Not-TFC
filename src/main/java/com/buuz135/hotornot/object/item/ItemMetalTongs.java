@@ -31,7 +31,7 @@ public class ItemMetalTongs extends ItemHotHolder implements IMetalItem {
 		TONGS_MAP.put(metal, this);
 
 		//noinspection DataFlowIssue
-		setMaxDamage((int) (metal.getToolMetal().getMaxUses() * 1.8));
+		setMaxDamage(metal.getToolMetal().getMaxUses());
 	}
 
 	/**
