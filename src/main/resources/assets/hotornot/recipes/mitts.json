@@ -1,13 +1,10 @@
 {
-  "result": {
-    "item": "hotornot:mitts"
-  },
+  "type": "minecraft:crafting_shaped",
   "pattern": [
     " C ",
     "CLC",
     " CS"
   ],
-  "type": "forge:ore_shaped",
   "key": {
     "C": {
       "type": "forge:ore_dict",
@@ -21,5 +18,8 @@
       "type": "forge:ore_dict",
       "ore": "string"
     }
+  },
+  "result": {
+    "item": "hotornot:mitts"
   }
 }

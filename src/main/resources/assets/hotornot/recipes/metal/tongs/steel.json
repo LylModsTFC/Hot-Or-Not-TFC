@@ -1,17 +1,20 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "tfc:shaped_skill",
   "pattern": [
-    "S S",
+    "I I",
     " S ",
     "S S"
   ],
   "key": {
+    "I": {
+      "item": "hotornot:metal/tongs_head/steel"
+    },
     "S": {
       "type": "forge:ore_dict",
       "ore": "stickWood"
     }
   },
   "result": {
-    "item": "hotornot:wooden_tongs"
+    "item": "hotornot:metal/tongs/steel"
   }
 }
