@@ -7,10 +7,14 @@ import com.buuz135.hotornot.object.item.ItemHotHolder;
 import com.buuz135.hotornot.util.FluidEffect;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.MobEffects;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
@@ -20,6 +24,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
@@ -39,6 +44,8 @@ public class ServerHandler {
 	@SubscribeEvent
 	public static void onTick(final WorldTickEvent event) {
 		if (event.phase != TickEvent.Phase.START) return;
+
+		if (event.side != Side.SERVER) return;
 
 		for (final EntityPlayerMP player : FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayers()) {
 			if (player.isBurning() || player.isCreative()) return;
@@ -171,8 +178,39 @@ public class ServerHandler {
 
 				if (event.world.getTotalWorldTime() % HotConfig.damageRate == 0) {
 					heldItemOffhand.damageItem(1, player);
+					// If it's empty the item broke
+					if (heldItemOffhand.isEmpty() && HotConfig.replaceBrokenHotHolder) {
+						if (findAndReplaceHotHolder(player, playerItemHandler)) {
+							event.world.playSound(null, player.posX, player.posY, player.posZ,
+									SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS,
+									0.8F,
+									0.8F + player.world.rand.nextFloat() * 0.4F);
+						}
+					}
 				}
 			}
 		}
+	}
+
+	/**
+	 * Searches through the player inventory for a {@link ItemHotHolder} if one is found it sets the offhand to this stack
+	 *
+	 * @param player Player entity
+	 * @param playerItemHandler The players Item Handler
+	 *
+	 * @return If a Hot Holder item was able to be found
+	 */
+	public static boolean findAndReplaceHotHolder(final EntityPlayer player, final IItemHandler playerItemHandler) {
+		for (int slotIndex = 0; slotIndex < playerItemHandler.getSlots(); slotIndex++) {
+			final ItemStack slotStack = playerItemHandler.getStackInSlot(slotIndex);
+
+			// Not a Hot Holder item
+			if (!(slotStack.getItem() instanceof ItemHotHolder)) continue;
+
+			player.setHeldItem(EnumHand.OFF_HAND, playerItemHandler.extractItem(slotIndex, slotStack.getCount(), false));
+			return true;
+		}
+
+		return false;
 	}
 }

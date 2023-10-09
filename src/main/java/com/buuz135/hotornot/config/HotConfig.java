@@ -54,6 +54,10 @@ public class HotConfig {
 	@Comment("How often the tools should be damaged in ticks (there are 20 ticks per second). 0 will disable the damaging functionality")
 	public static int damageRate = 1;
 
+	@Comment("If broken Tongs or Mitts should be automatically replaced for you")
+	@LangKey("config." + MOD_ID + ".replaceBrokenHotHolder")
+	public static boolean replaceBrokenHotHolder = false;
+
 	@SubscribeEvent
 	public static void onConfigChanged(final OnConfigChangedEvent event) {
 		if (event.getModID().equals(MOD_ID)) {
