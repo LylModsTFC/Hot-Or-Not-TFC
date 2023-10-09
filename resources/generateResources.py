@@ -17,6 +17,13 @@ TFC_METALS = {
     "red_steel": "Red Steel"
 }
 
+MOLD_METALS = [
+    "copper",
+    "bronze",
+    "bismuth_bronze",
+    "black_bronze"
+]
+
 
 def generateLang() -> None:
     lang = Lang("en_us")
@@ -35,6 +42,12 @@ def generateLang() -> None:
     lang.writeHeader("Items")
     lang.writeItem("hotornot.wooden_tongs", "Wooden Tongs")
     lang.writeItem("hotornot.mitts", "Mitts")
+    lang.newLine()
+    lang.writeComment("Molds")
+    lang.writeItem("hotornot.ceramics.unfired.mold.tongs_jaw", "Unfired Tongs Jaw Mold")
+    lang.writeItem("hotornot.ceramics.fired.mold.tongs_jaw", "Fired Tongs Jaw Mold")
+    for moldMetal in MOLD_METALS:
+        lang.writeItem(f"hotornot.ceramics.fired.mold.tongs_jaw.{moldMetal}", f"{TFC_METALS[moldMetal]} Tongs Jaw Mold")
     lang.newLine()
 
     lang.writeComment("Tongs")
@@ -57,6 +70,13 @@ def main() -> None:
     models.createItem("wooden_tongs", "hotornot:items/wooden_tongs")
     recipes.createShaped("wooden_tongs", ["S S", " S ", "S S"], {"S": Ingredient(ore="stickWood")},
                          Result("hotornot:wooden_tongs"))
+
+    models.createItem("ceramics/unfired/mold/tongs_jaw", "hotornot:items/ceramics/unfired/mold/tongs_jaw")
+    models.createItem("ceramics/fired/mold/tongs_jaw/empty", "hotornot:items/ceramics/fired/mold/tongs_jaw/empty")
+
+    for moldMetal in MOLD_METALS:
+        models.createItem(f"ceramics/fired/mold/tongs_jaw/{moldMetal}",
+                          f"hotornot:items/ceramics/fired/mold/tongs_jaw/{moldMetal}")
 
     for metal in TFC_METALS:
         models.createItem(f"metal/tongs/{metal}", f"hotornot:items/metal/tongs/{metal}")

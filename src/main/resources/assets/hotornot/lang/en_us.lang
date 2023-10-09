@@ -11,6 +11,14 @@ itemGroup.hotornot=Hot or Not - TFC
 item.hotornot.wooden_tongs.name=Wooden Tongs
 item.hotornot.mitts.name=Mitts
 
+# Molds
+item.hotornot.ceramics.unfired.mold.tongs_jaw.name=Unfired Tongs Jaw Mold
+item.hotornot.ceramics.fired.mold.tongs_jaw.name=Fired Tongs Jaw Mold
+item.hotornot.ceramics.fired.mold.tongs_jaw.copper.name=Copper Tongs Jaw Mold
+item.hotornot.ceramics.fired.mold.tongs_jaw.bronze.name=Bronze Tongs Jaw Mold
+item.hotornot.ceramics.fired.mold.tongs_jaw.bismuth_bronze.name=Bismuth Bronze Tongs Jaw Mold
+item.hotornot.ceramics.fired.mold.tongs_jaw.black_bronze.name=Black Bronze Tongs Jaw Mold
+
 # Tongs
 item.hotornot.metal.tongs.copper.name=Copper Tongs
 item.hotornot.metal.tongs_jaw.copper.name=Copper Tongs Jaw Piece

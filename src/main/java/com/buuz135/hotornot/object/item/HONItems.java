@@ -5,18 +5,26 @@ import com.google.common.collect.ImmutableList.Builder;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.api.types.Metal.Tier;
+import net.dries007.tfc.objects.CreativeTabsTFC;
+import net.dries007.tfc.objects.items.ceramics.ItemPottery;
+import net.dries007.tfc.util.Helpers;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import static com.buuz135.hotornot.HotOrNot.HOTORNOT_TAB;
 import static com.buuz135.hotornot.HotOrNot.MOD_ID;
 
+@ObjectHolder(value = MOD_ID)
 @EventBusSubscriber(modid = MOD_ID)
 public final class HONItems {
 
+	@ObjectHolder("ceramics/fired/mold/tongs_jaw")
+	public static final ItemMetalTongsJawMold TONGS_JAW_MOLD = Helpers.getNull();
 	private static ImmutableList<Item> allSimpleItems;
 
 	public static ImmutableList<Item> getAllSimpleItems() {
@@ -27,6 +35,10 @@ public final class HONItems {
 	public static void registerItem(final Register<Item> event) {
 		final IForgeRegistry<Item> registry = event.getRegistry();
 		final Builder<Item> simpleItems = ImmutableList.builder();
+
+		simpleItems.add(register(registry, "ceramics/unfired/mold/tongs_jaw", new ItemPottery(), CreativeTabsTFC.CT_POTTERY));
+
+		register(registry, "ceramics/fired/mold/tongs_jaw", new ItemMetalTongsJawMold(), CreativeTabsTFC.CT_POTTERY);
 
 		simpleItems.add(register(registry, "wooden_tongs",
 				new ItemHotHolder(Tier.TIER_0)
@@ -48,9 +60,13 @@ public final class HONItems {
 	}
 
 	private static <T extends Item> T register(final IForgeRegistry<Item> r, final String name, final T item) {
+		return register(r, name, item, HOTORNOT_TAB);
+	}
+
+	private static <T extends Item> T register(final IForgeRegistry<Item> r, final String name, final T item, final CreativeTabs ct) {
 		item.setRegistryName(MOD_ID, name);
 		item.setTranslationKey(MOD_ID + "." + name.replace('/', '.'));
-		item.setCreativeTab(HOTORNOT_TAB);
+		item.setCreativeTab(ct);
 		r.register(item);
 		return item;
 	}
