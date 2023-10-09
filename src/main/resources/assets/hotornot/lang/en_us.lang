@@ -9,24 +9,24 @@ itemGroup.hotornot=Hot or Not - TFC
 
 ## Items
 item.hotornot.wooden_tongs.name=Wooden Tongs
-item.hotornot.mitss.name=Mitss
+item.hotornot.mitts.name=Mitts
 
 # Tongs
 item.hotornot.metal.tongs.copper.name=Copper Tongs
-item.hotornot.metal.tongs_head.copper.name=Copper Tongs Head
+item.hotornot.metal.tongs_jaw.copper.name=Copper Tongs Jaw Piece
 item.hotornot.metal.tongs.bronze.name=Bronze Tongs
-item.hotornot.metal.tongs_head.bronze.name=Bronze Tongs Head
+item.hotornot.metal.tongs_jaw.bronze.name=Bronze Tongs Jaw Piece
 item.hotornot.metal.tongs.bismuth_bronze.name=Bismuth Bronze Tongs
-item.hotornot.metal.tongs_head.bismuth_bronze.name=Bismuth Bronze Tongs Head
+item.hotornot.metal.tongs_jaw.bismuth_bronze.name=Bismuth Bronze Tongs Jaw Piece
 item.hotornot.metal.tongs.black_bronze.name=Black Bronze Tongs
-item.hotornot.metal.tongs_head.black_bronze.name=Black Bronze Tongs Head
+item.hotornot.metal.tongs_jaw.black_bronze.name=Black Bronze Tongs Jaw Piece
 item.hotornot.metal.tongs.wrought_iron.name=Wrought Iron Tongs
-item.hotornot.metal.tongs_head.wrought_iron.name=Wrought Iron Tongs Head
+item.hotornot.metal.tongs_jaw.wrought_iron.name=Wrought Iron Tongs Jaw Piece
 item.hotornot.metal.tongs.steel.name=Steel Tongs
-item.hotornot.metal.tongs_head.steel.name=Steel Tongs Head
+item.hotornot.metal.tongs_jaw.steel.name=Steel Tongs Jaw Piece
 item.hotornot.metal.tongs.black_steel.name=Black Steel Tongs
-item.hotornot.metal.tongs_head.black_steel.name=Black Steel Tongs Head
+item.hotornot.metal.tongs_jaw.black_steel.name=Black Steel Tongs Jaw Piece
 item.hotornot.metal.tongs.blue_steel.name=Blue Steel Tongs
-item.hotornot.metal.tongs_head.blue_steel.name=Blue Steel Tongs Head
+item.hotornot.metal.tongs_jaw.blue_steel.name=Blue Steel Tongs Jaw Piece
 item.hotornot.metal.tongs.red_steel.name=Red Steel Tongs
-item.hotornot.metal.tongs_head.red_steel.name=Red Steel Tongs Head
+item.hotornot.metal.tongs_jaw.red_steel.name=Red Steel Tongs Jaw Piece

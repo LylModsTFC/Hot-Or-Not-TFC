@@ -41,7 +41,7 @@ public final class HONItems {
 			if (!metal.isToolMetal()) continue;
 
 			simpleItems.add(register(registry, "metal/tongs/" + metal, new ItemMetalTongs(metal)));
-			simpleItems.add(register(registry, "metal/tongs_head/" + metal, new ItemMetalTongsHead(metal)));
+			simpleItems.add(register(registry, "metal/tongs_jaw/" + metal, new ItemMetalTongsHead(metal)));
 		}
 
 		allSimpleItems = simpleItems.build();

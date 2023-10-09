@@ -40,7 +40,7 @@ def generateLang() -> None:
     lang.writeComment("Tongs")
     for [metal, name] in TFC_METALS.items():
         lang.writeItem(f"hotornot.metal.tongs.{metal}", f"{name} Tongs")
-        lang.writeItem(f"hotornot.metal.tongs_head.{metal}", f"{name} Tongs Head")
+        lang.writeItem(f"hotornot.metal.tongs_jaw.{metal}", f"{name} Tongs Jaw Piece")
 
 
 def main() -> None:
@@ -60,12 +60,12 @@ def main() -> None:
 
     for metal in TFC_METALS:
         models.createItem(f"metal/tongs/{metal}", f"hotornot:items/metal/tongs/{metal}")
-        models.createItem(f"metal/tongs_head/{metal}", f"hotornot:items/metal/tongs_head/{metal}")
+        models.createItem(f"metal/tongs_jaw/{metal}", f"hotornot:items/metal/tongs_jaw/{metal}")
         # Metal tongs recipe
         recipes.createRecipeAdvanced(f"metal/tongs/{metal}", "tfc:shaped_skill",
                                      ["I I", " S ", "S S"],
                                      {
-                                         "I": Ingredient(itemID=f"hotornot:metal/tongs_head/{metal}"),
+                                         "I": Ingredient(itemID=f"hotornot:metal/tongs_jaw/{metal}"),
                                          "S": Ingredient(ore="stickWood")},
                                      Result(f"hotornot:metal/tongs/{metal}"))
 
