@@ -7,7 +7,10 @@ import net.dries007.tfc.objects.items.ItemTFC;
 import net.dries007.tfc.util.Helpers;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -28,6 +31,11 @@ public class ItemHotHolder extends ItemTFC {
 	@Override
 	public void addInformation(final ItemStack itemStack, final @Nullable World world, final List<String> tooltip, final ITooltipFlag tooltipFlag) {
 		tooltip.add(I18n.format(Helpers.getEnumName(tier)) + " - " + I18n.format("tooltip.hotornot.hot_holder_tooltip"));
+	}
+
+	@Override
+	public boolean doesSneakBypassUse(final ItemStack itemStack, final IBlockAccess world, final BlockPos blockPos, final EntityPlayer player) {
+		return true;
 	}
 
 	@Override
