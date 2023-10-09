@@ -59,8 +59,13 @@ public class HotOrNot {
 		return INSTANCE.log;
 	}
 
+	public static HotOrNot getInstance() {
+		return INSTANCE;
+	}
+
 	@EventHandler
 	public void onPreInit(final FMLPreInitializationEvent event) {
+		NetworkRegistry.INSTANCE.registerGuiHandler(this, new HotGuiHandler());
 		network = NetworkRegistry.INSTANCE.newSimpleChannel(MOD_ID);
 		network.registerMessage(new SyncClientLists.Handler(), SyncClientLists.class, 1, Side.CLIENT);
 	}

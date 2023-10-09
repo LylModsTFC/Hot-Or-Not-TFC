@@ -1,18 +1,28 @@
 package com.buuz135.hotornot.object.item;
 
+import com.buuz135.hotornot.HotGuiHandler;
 import net.dries007.tfc.api.capability.IMoldHandler;
+import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.Heat;
+import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.dries007.tfc.api.capability.heat.ItemHeatHandler;
 import net.dries007.tfc.api.types.Metal;
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.objects.container.CapabilityContainerListener;
+import net.dries007.tfc.objects.container.ContainerEmpty;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.items.ceramics.ItemPottery;
+import net.dries007.tfc.objects.recipes.UnmoldRecipe;
 import net.dries007.tfc.util.Helpers;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.*;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
@@ -21,8 +31,10 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.FluidTankPropertiesWrapper;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -43,6 +55,40 @@ public class ItemMetalTongsJawMold extends ItemPottery {
 			return 1;
 		}
 		return super.getItemStackLimit(itemStack);
+	}
+
+
+	@Nonnull
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
+		final ItemStack stack = player.getHeldItem(hand);
+		if (world.isRemote) return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+
+		final IItemHeat cap = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+		if (!player.isSneaking() && cap != null && cap.isMolten()) {
+			HotGuiHandler.openMoldGui(world, player);
+		}
+
+		if (player.isSneaking()) {
+			// Unmold on right click, if possible
+			final InventoryCrafting craftMatrix = new InventoryCrafting(new ContainerEmpty(), 3, 3);
+			craftMatrix.setInventorySlotContents(0, stack);
+			for (final IRecipe recipe : ForgeRegistries.RECIPES.getValuesCollection()) {
+				if (recipe instanceof UnmoldRecipe && recipe.matches(craftMatrix, world)) {
+					final ItemStack result = recipe.getCraftingResult(craftMatrix);
+					if (!result.isEmpty()) {
+						final ItemStack moldResult = ((UnmoldRecipe) recipe).getMoldResult(stack);
+						player.setHeldItem(hand, result);
+						if (!moldResult.isEmpty()) {
+							ItemHandlerHelper.giveItemToPlayer(player, moldResult);
+						} else {
+							world.playSound(null, player.getPosition(), TFCSounds.CERAMIC_BREAK, SoundCategory.PLAYERS, 1.0f, 1.0f);
+						}
+					}
+				}
+			}
+		}
+		return new ActionResult<>(EnumActionResult.SUCCESS, stack);
 	}
 
 	@Nonnull

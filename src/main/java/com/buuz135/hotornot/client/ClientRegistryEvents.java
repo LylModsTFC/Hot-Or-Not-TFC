@@ -32,7 +32,7 @@ public final class ClientRegistryEvents {
 		HONItems.getAllSimpleItems().forEach(ClientRegistryEvents::registerModel);
 
 		{ // Registering of our jaw molds
-			final ItemMetalTongsJawMold moldItem = HONItems.TONGS_JAW_MOLD;
+			final ItemMetalTongsJawMold moldItem = HONItems.TONGS_JAW_FIRED_MOLD;
 
 			//noinspection DataFlowIssue
 			ModelBakery.registerItemVariants(moldItem, new ModelResourceLocation(moldItem.getRegistryName().toString() + "/empty"));

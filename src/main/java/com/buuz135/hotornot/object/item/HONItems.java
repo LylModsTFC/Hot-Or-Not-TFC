@@ -24,7 +24,9 @@ import static com.buuz135.hotornot.HotOrNot.MOD_ID;
 public final class HONItems {
 
 	@ObjectHolder("ceramics/fired/mold/tongs_jaw")
-	public static final ItemMetalTongsJawMold TONGS_JAW_MOLD = Helpers.getNull();
+	public static final ItemMetalTongsJawMold TONGS_JAW_FIRED_MOLD = Helpers.getNull();
+	@ObjectHolder("ceramics/unfired/mold/tongs_jaw")
+	public static final ItemPottery TONGS_JAW_UNFIRED_MOLD = Helpers.getNull();
 	private static ImmutableList<Item> allSimpleItems;
 
 	public static ImmutableList<Item> getAllSimpleItems() {
