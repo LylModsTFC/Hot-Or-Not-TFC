@@ -1,6 +1,7 @@
 package com.buuz135.hotornot.object.item;
 
 import com.buuz135.hotornot.HotGuiHandler;
+import com.buuz135.hotornot.object.recipe.UnMoldJawPiece;
 import net.dries007.tfc.api.capability.IMoldHandler;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.Heat;
@@ -12,7 +13,6 @@ import net.dries007.tfc.objects.container.CapabilityContainerListener;
 import net.dries007.tfc.objects.container.ContainerEmpty;
 import net.dries007.tfc.objects.fluids.FluidsTFC;
 import net.dries007.tfc.objects.items.ceramics.ItemPottery;
-import net.dries007.tfc.objects.recipes.UnmoldRecipe;
 import net.dries007.tfc.util.Helpers;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -61,34 +61,35 @@ public class ItemMetalTongsJawMold extends ItemPottery {
 	@Nonnull
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
-		final ItemStack stack = player.getHeldItem(hand);
-		if (world.isRemote) return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+		final ItemStack heldStack = player.getHeldItem(hand);
+		if (world.isRemote) return new ActionResult<>(EnumActionResult.SUCCESS, heldStack);
 
-		final IItemHeat cap = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+		final IItemHeat cap = heldStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
 		if (!player.isSneaking() && cap != null && cap.isMolten()) {
 			HotGuiHandler.openMoldGui(world, player);
 		}
 
-		if (player.isSneaking()) {
-			// Unmold on right click, if possible
-			final InventoryCrafting craftMatrix = new InventoryCrafting(new ContainerEmpty(), 3, 3);
-			craftMatrix.setInventorySlotContents(0, stack);
-			for (final IRecipe recipe : ForgeRegistries.RECIPES.getValuesCollection()) {
-				if (recipe instanceof UnmoldRecipe && recipe.matches(craftMatrix, world)) {
-					final ItemStack result = recipe.getCraftingResult(craftMatrix);
-					if (!result.isEmpty()) {
-						final ItemStack moldResult = ((UnmoldRecipe) recipe).getMoldResult(stack);
-						player.setHeldItem(hand, result);
-						if (!moldResult.isEmpty()) {
-							ItemHandlerHelper.giveItemToPlayer(player, moldResult);
-						} else {
-							world.playSound(null, player.getPosition(), TFCSounds.CERAMIC_BREAK, SoundCategory.PLAYERS, 1.0f, 1.0f);
-						}
+		// Must be sneaking
+		if (!player.isSneaking()) return new ActionResult<>(EnumActionResult.SUCCESS, heldStack);
+
+		// Unmold on right click, if possible
+		final InventoryCrafting craftMatrix = new InventoryCrafting(new ContainerEmpty(), 3, 3);
+		craftMatrix.setInventorySlotContents(0, heldStack);
+		for (final IRecipe recipe : ForgeRegistries.RECIPES.getValuesCollection()) {
+			if (recipe instanceof UnMoldJawPiece && recipe.matches(craftMatrix, world)) {
+				final ItemStack craftingResult = recipe.getCraftingResult(craftMatrix);
+				if (!craftingResult.isEmpty()) {
+					final ItemStack moldResult = ((UnMoldJawPiece) recipe).getMoldResult(heldStack);
+					player.setHeldItem(hand, craftingResult);
+					if (!moldResult.isEmpty()) {
+						ItemHandlerHelper.giveItemToPlayer(player, moldResult);
+					} else {
+						world.playSound(null, player.getPosition(), TFCSounds.CERAMIC_BREAK, SoundCategory.PLAYERS, 1.0f, 1.0f);
 					}
 				}
 			}
 		}
-		return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+		return new ActionResult<>(EnumActionResult.SUCCESS, heldStack);
 	}
 
 	@Nonnull

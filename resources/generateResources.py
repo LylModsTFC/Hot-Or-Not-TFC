@@ -1,5 +1,6 @@
 import os
 
+import MinecraftDataGen.Util
 from MinecraftDataGen import Models as models
 from MinecraftDataGen import Recipes as recipes
 from MinecraftDataGen.Lang import Lang
@@ -88,6 +89,23 @@ def main() -> None:
                                          "I": Ingredient(itemID=f"hotornot:metal/tongs_jaw/{metal}"),
                                          "S": Ingredient(ore="stickWood")},
                                      Result(f"hotornot:metal/tongs/{metal}"))
+
+    # Recipe factories, needed for our mold recipe. Generated so we can delete all the recipes comfortably
+    MinecraftDataGen.Util.writeDictToJson("recipes/_factories", {
+        "recipes": {
+            "unmold_recipe": "com.buuz135.hotornot.object.recipe.UnMoldJawPiece$Factory"
+        }
+    })
+
+    # Tongs mold recipe, might as well generate it I douno
+    MinecraftDataGen.Util.writeDictToJson("recipes/metal/unmold/tongs_jaw", {
+        "type": "hotornot:unmold_recipe",
+        "ingredients": [
+            {
+                "item": "hotornot:ceramics/fired/mold/tongs_jaw"
+            }
+        ]
+    })
 
 
 if __name__ == "__main__":
