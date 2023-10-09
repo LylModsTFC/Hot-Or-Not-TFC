@@ -53,7 +53,7 @@ public final class ClientEvents {
 			final IItemHeat heat = itemStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
 			assert heat != null;
 
-			if (heat.getTemperature() >= HotConfig.hotItemTemp) {
+			if (heat.getTemperature() >= HotConfig.TEMPERATURE_VALUES.hotItemTemp) {
 				event.getToolTip().add(FluidEffect.HOT.color + I18n.format(FluidEffect.HOT.tooltip));
 			}
 		}

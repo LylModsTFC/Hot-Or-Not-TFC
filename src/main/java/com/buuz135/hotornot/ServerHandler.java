@@ -105,7 +105,7 @@ public class ServerHandler {
 					// Just checked this
 					assert itemHeat != null;
 
-					if (itemHeat.getTemperature() >= HotConfig.hotItemTemp) {
+					if (itemHeat.getTemperature() >= HotConfig.TEMPERATURE_VALUES.hotItemTemp) {
 
 						if (hasHotHolder) {
 							damageHotHolder = true;
