@@ -12,19 +12,20 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 public enum FluidEffect {
-	HOT(fluidStack -> fluidStack.getFluid().getTemperature(fluidStack) >= HotConfig.TEMPERATURE_VALUES.hotFluidTemp + 273 && HotConfig.handleHotFluids,
+	HOT(fluidStack -> fluidStack.getFluid()
+			.getTemperature(fluidStack) >= HotConfig.TEMPERATURE_VALUES.hotFluidTemp + 273 && HotConfig.EFFECT_HANDLING.handleHotFluids,
 			entityPlayerMP -> entityPlayerMP.setFire(1),
 			TextFormatting.RED,
 			"tooltip.hotornot.toohot"),
 	COLD(fluidStack -> fluidStack.getFluid()
-			.getTemperature(fluidStack) <= HotConfig.TEMPERATURE_VALUES.coldFluidTemp + 273 && HotConfig.handleColdFluids,
+			.getTemperature(fluidStack) <= HotConfig.TEMPERATURE_VALUES.coldFluidTemp + 273 && HotConfig.EFFECT_HANDLING.handleColdFluids,
 			entityPlayerMP -> {
 				entityPlayerMP.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 21, 1));
 				entityPlayerMP.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 21, 1));
 			},
 			TextFormatting.AQUA,
 			"tooltip.hotornot.toocold"),
-	GAS(fluidStack -> fluidStack.getFluid().isGaseous(fluidStack) && HotConfig.handleGaseousFluids,
+	GAS(fluidStack -> fluidStack.getFluid().isGaseous(fluidStack) && HotConfig.EFFECT_HANDLING.handleGaseousFluids,
 			entityPlayerMP -> entityPlayerMP.addPotionEffect(new PotionEffect(MobEffects.LEVITATION, 21, 1)),
 			TextFormatting.YELLOW,
 			"tooltip.hotornot.toolight");

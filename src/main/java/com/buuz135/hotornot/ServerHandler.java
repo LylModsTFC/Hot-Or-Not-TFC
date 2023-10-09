@@ -89,7 +89,7 @@ public class ServerHandler {
 						// Try to toss an item every 20 ticks (1 second)
 						if (event.world.getTotalWorldTime() % 20 == 0) {
 							effect.interactPlayer.accept(player);
-							if (HotConfig.tossItems) {
+							if (HotConfig.EFFECT_HANDLING.tossItems) {
 								final ItemStack extractedStack = playerItemHandler.extractItem(playerSlotIndex, slotStack.getCount(), false);
 								player.dropItem(extractedStack, false, true);
 							}
@@ -99,7 +99,7 @@ public class ServerHandler {
 
 				// Item has TFC heat capability
 				if (slotStack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null)) {
-					if (!HotConfig.handleHotItems) continue;
+					if (!HotConfig.EFFECT_HANDLING.handleHotItems) continue;
 
 					final IItemHeat itemHeat = slotStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
 					// Just checked this
@@ -115,7 +115,7 @@ public class ServerHandler {
 						// Try to toss an item every 20 ticks (1 second)
 						if (event.world.getTotalWorldTime() % 20 == 0) {
 							player.setFire(1);
-							if (HotConfig.tossItems) {
+							if (HotConfig.EFFECT_HANDLING.tossItems) {
 								final ItemStack extractedStack = playerItemHandler.extractItem(playerSlotIndex, slotStack.getCount(), false);
 								player.dropItem(extractedStack, false, true);
 							}
@@ -134,7 +134,7 @@ public class ServerHandler {
 					// Try to toss an item every 20 ticks (1 second)
 					if (event.world.getTotalWorldTime() % 20 == 0) {
 						player.setFire(1);
-						if (HotConfig.tossItems) {
+						if (HotConfig.EFFECT_HANDLING.tossItems) {
 							final ItemStack extractedStack = playerItemHandler.extractItem(playerSlotIndex, slotStack.getCount(), false);
 							player.dropItem(extractedStack, false, true);
 						}
@@ -174,12 +174,12 @@ public class ServerHandler {
 			// Damage the item only once, no matter how many effects we prevent
 			if (hasHotHolder && damageHotHolder) {
 				// Prevent divide by 0 & disable the tool damage functionality
-				if (HotConfig.damageRate == 0) continue;
+				if (HotConfig.EFFECT_HANDLING.damageRate == 0) continue;
 
-				if (event.world.getTotalWorldTime() % HotConfig.damageRate == 0) {
+				if (event.world.getTotalWorldTime() % HotConfig.EFFECT_HANDLING.damageRate == 0) {
 					heldItemOffhand.damageItem(1, player);
 					// If it's empty the item broke
-					if (heldItemOffhand.isEmpty() && HotConfig.replaceBrokenHotHolder) {
+					if (heldItemOffhand.isEmpty() && HotConfig.EFFECT_HANDLING.replaceBrokenHotHolder) {
 						if (findAndReplaceHotHolder(player, playerItemHandler)) {
 							event.world.playSound(null, player.posX, player.posY, player.posZ,
 									SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS,

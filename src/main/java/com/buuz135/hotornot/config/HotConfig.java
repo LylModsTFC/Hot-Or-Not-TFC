@@ -3,7 +3,6 @@ package com.buuz135.hotornot.config;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.Config.Comment;
 import net.minecraftforge.common.config.Config.LangKey;
-import net.minecraftforge.common.config.Config.RangeInt;
 import net.minecraftforge.common.config.Config.Type;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
@@ -26,31 +25,13 @@ public class HotConfig {
 	@Comment("Configuration for the temperature thresholds the effects happen at. Values are in Celsius")
 	public static final TemperatureValues TEMPERATURE_VALUES = new TemperatureValues();
 
-	@Comment("If true, hot effects for items will be enabled")
-	public static boolean handleHotItems = true;
+	@LangKey("config." + MOD_ID + ".effect_handling")
+	@Comment("Configuration relating to effect handling")
+	public static final EffectHandling EFFECT_HANDLING = new EffectHandling();
 
-	@Comment("If true, hot effects for fluids will be enabled")
-	public static boolean handleHotFluids = true;
-
-	@Comment("If true, cold effects for fluids will be enabled")
-	public static boolean handleColdFluids = true;
-
-	@Comment("If true, gaseous effects for fluids will be enabled")
-	public static boolean handleGaseousFluids = true;
-
+	@LangKey("config." + MOD_ID + ".render_effect_tooltip")
 	@Comment("If true, items causing effects will get a tooltip")
 	public static boolean renderEffectTooltip = true;
-
-	@Comment("If true, hot items make the player yeet them")
-	public static boolean tossItems = false;
-
-	@RangeInt(min = 0)
-	@Comment("How often the tools should be damaged in ticks (there are 20 ticks per second). 0 will disable the damaging functionality")
-	public static int damageRate = 1;
-
-	@Comment("If broken Tongs or Mitts should be automatically replaced for you")
-	@LangKey("config." + MOD_ID + ".replace_broken_hot_holder")
-	public static boolean replaceBrokenHotHolder = false;
 
 	@SubscribeEvent
 	public static void onConfigChanged(final OnConfigChangedEvent event) {
