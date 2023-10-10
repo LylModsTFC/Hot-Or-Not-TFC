@@ -22,7 +22,7 @@ public final class HotLists {
 	private static final List<Item> gaseousList = new ArrayList<>();
 	private static final List<Item> exemptionList = new ArrayList<>();
 
-	public static void init() {
+	static {
 		Arrays.stream(HotConfig.MANUAL_ENTRIES.itemRemovals)
 				.map(itemRemoval -> Item.REGISTRY.getObject(new ResourceLocation(itemRemoval)))
 				.filter(Objects::nonNull)
