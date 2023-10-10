@@ -61,19 +61,32 @@ dependencies {
 
 processResources {
     // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
+    inputs.property("moid", modID)
+    inputs.property("modname", modName)
+    inputs.property("version", project.version)
+    inputs.property("mcversion", project.minecraft.version)
 
-    // replace stuff in mcmod.info, nothing else
+    // replace stuff in mcmod.info and pack.mcmeta
     from(sourceSets.main.resources.srcDirs) {
-        include "mcmod.info"
+        include("mcmod.info", "pack.mcmeta")
 
-        // replace version and mcversion
-        expand "version": project.version, "mcversion": project.minecraft.version
+        // replace version, mcversion, modid, and modname
+        expand("version": project.version, "mcversion": project.minecraft.version, "modname": modName, "modid": modID)
     }
 
-    // copy everything else, thats not the mcmod.info
+    // copy everything else
     from(sourceSets.main.resources.srcDirs) {
-        exclude "mcmod.info"
+        exclude("mcmod.info", "pack.mcmeta")
     }
+
+    // Copy lisence from project root
+    from(".") {
+        include("LICENSE")
+    }
+}
+
+
+project.tasks.withType(Jar) { jarTask ->
+    // Add the minecraft version to result in HotOrNotPlus-${mcversion}-${version}
+    jarTask.appendix = project.minecraft.version
 }
