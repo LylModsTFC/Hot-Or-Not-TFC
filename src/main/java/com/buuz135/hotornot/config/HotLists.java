@@ -48,41 +48,42 @@ public final class HotLists {
 	 *
 	 * @return If the item stack is exempt from the checks
 	 */
+	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 	public static boolean isExempt(final ItemStack itemStack) {
 		return exemptionList.contains(itemStack.getItem());
 	}
 
 	/**
-	 * Checks if an item is hot
+	 * Checks if an item is considered to be hot
 	 *
 	 * @param itemStack The item stack to check
 	 *
 	 * @return If the item is considered hot
 	 */
 	public static boolean isHot(final ItemStack itemStack) {
-		return hotList.contains(itemStack.getItem());
+		return !isExempt(itemStack) && hotList.contains(itemStack.getItem());
 	}
 
 	/**
-	 * Checks if an item is in the cold list
+	 * Checks if an item is considered to be cold
 	 *
 	 * @param itemStack The item stack to check
 	 *
 	 * @return If the item is considered cold
 	 */
 	public static boolean isCold(final ItemStack itemStack) {
-		return coldList.contains(itemStack.getItem());
+		return !isExempt(itemStack) && coldList.contains(itemStack.getItem());
 	}
 
 	/**
-	 * Checks if an item is in the gaseous list
+	 * Checks if an item is considered to be gaseous
 	 *
 	 * @param itemStack The item stack to check
 	 *
 	 * @return If the item is considered gaseous
 	 */
 	public static boolean isGaseous(final ItemStack itemStack) {
-		return gaseousList.contains(itemStack.getItem());
+		return !isExempt(itemStack) && gaseousList.contains(itemStack.getItem());
 	}
 
 	/**

@@ -1,28 +1,24 @@
 package com.buuz135.hotornot.client;
 
-import com.buuz135.hotornot.util.FluidEffect;
 import com.buuz135.hotornot.HotOrNot;
 import com.buuz135.hotornot.config.HotConfig;
-import com.buuz135.hotornot.config.HotLists;
-import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
-import net.dries007.tfc.api.capability.heat.IItemHeat;
+import com.buuz135.hotornot.util.ItemEffect;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 @SideOnly(Side.CLIENT)
 @EventBusSubscriber(modid = HotOrNot.MOD_ID, value = Side.CLIENT)
 public final class ClientEvents {
 
 	@SubscribeEvent
-	public static void onItemTooltip(final ItemTooltipEvent event) {
+	public static void onRenderItemTooltip(final ItemTooltipEvent event) {
 		// Quit early if we shouldn't add a tooltip
 		if (!HotConfig.renderEffectTooltip) return;
 
@@ -30,44 +26,56 @@ public final class ClientEvents {
 
 		if (itemStack.isEmpty()) return;
 
-		if (HotLists.isExempt(itemStack)) return;
+		final boolean checkContents = itemStack.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,
+				null) && HotConfig.EFFECT_HANDLING.checkItemContainerContents;
 
-		// Fluid item container
-		if (itemStack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
-			final IFluidHandlerItem fluidHandler = itemStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
-			assert fluidHandler != null;
+		for (final ItemEffect effect : ItemEffect.values()) {
 
-			final FluidStack fluidStack = fluidHandler.drain(1, false);
-			// No fluid to worry about
-			if (fluidStack == null) return;
+			// This stack doesn't have this effect
+			if (!effect.stackHasEffect(itemStack)) {
+				if (checkContents) {
+					final IItemHandler temp = itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+					// Checked this in order to reach here
+					assert temp != null;
 
-			for (final FluidEffect effect : FluidEffect.values()) {
-				if (!effect.isValid(fluidStack)) continue;
+					if (contentsHaveEffect(temp, effect, 0)) {
+						event.getToolTip().add(effect.color + I18n.format(effect.tooltip));
+					}
+				}
+				continue;
+			}
 
-				event.getToolTip().add(effect.color + I18n.format(effect.tooltip));
+			event.getToolTip().add(effect.color + I18n.format(effect.tooltip));
+		}
+	}
+
+	/**
+	 * Checks if any of the contents of this item have the effect
+	 *
+	 * @param itemHandler Item handler to search
+	 * @param effect The effect to check for
+	 * @param containerDepth The depth of the search
+	 *
+	 * @return If any of the contents have the item effect
+	 */
+	private static boolean contentsHaveEffect(final IItemHandler itemHandler, final ItemEffect effect, int containerDepth) {
+		for (int slotIndex = 0; slotIndex < itemHandler.getSlots(); slotIndex++) {
+			final ItemStack slotStack = itemHandler.getStackInSlot(slotIndex);
+
+			if (effect.stackHasEffect(slotStack)) return true;
+
+			if (containerDepth < HotConfig.EFFECT_HANDLING.containerDepthLimit) {
+				if (slotStack.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
+					final IItemHandler internalHandler = slotStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+					// Just checked this
+					assert internalHandler != null;
+
+					if (contentsHaveEffect(itemHandler, effect, ++containerDepth)) {
+						return true;
+					}
+				}
 			}
 		}
-
-		// TFC heat capability
-		if (itemStack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null)) {
-			final IItemHeat heat = itemStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-			assert heat != null;
-
-			if (heat.getTemperature() >= HotConfig.TEMPERATURE_VALUES.hotItemTemp) {
-				event.getToolTip().add(FluidEffect.HOT.color + I18n.format(FluidEffect.HOT.tooltip));
-			}
-		}
-
-		if (HotLists.isHot(itemStack)) {
-			event.getToolTip().add(FluidEffect.HOT.color + I18n.format(FluidEffect.HOT.tooltip));
-		}
-
-		if (HotLists.isCold(itemStack)) {
-			event.getToolTip().add(FluidEffect.COLD.color + I18n.format(FluidEffect.COLD.tooltip));
-		}
-
-		if (HotLists.isGaseous(itemStack)) {
-			event.getToolTip().add(FluidEffect.GAS.color + I18n.format(FluidEffect.GAS.tooltip));
-		}
+		return false;
 	}
 }

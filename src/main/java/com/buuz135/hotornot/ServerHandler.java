@@ -1,23 +1,16 @@
 package com.buuz135.hotornot;
 
 import com.buuz135.hotornot.config.HotConfig;
-import com.buuz135.hotornot.config.HotLists;
 import com.buuz135.hotornot.network.SyncClientLists;
 import com.buuz135.hotornot.object.item.ItemHotHolder;
-import com.buuz135.hotornot.util.FluidEffect;
-import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
-import net.dries007.tfc.api.capability.heat.IItemHeat;
+import com.buuz135.hotornot.util.ItemEffect;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -36,7 +29,7 @@ public class ServerHandler {
 
 	@SubscribeEvent
 	public static void onPlayerLogin(final PlayerLoggedInEvent event) {
-
+		// TODO need to sync more values
 		HotOrNot.getNetwork().sendTo(new SyncClientLists(), (EntityPlayerMP) event.player);
 		HotOrNot.getLog().info("Synced server lists with {}", event.player.getName());
 	}
@@ -54,129 +47,14 @@ public class ServerHandler {
 			// If players don't have the item handler capability somebody did some nasty mixin and messed things up for more than just us
 			assert playerItemHandler != null;
 
-
 			final ItemStack heldItemOffhand = player.getHeldItemOffhand();
 
-			final boolean hasHotHolder = heldItemOffhand.getItem() instanceof ItemHotHolder;
-			boolean damageHotHolder = false;
-			for (int playerSlotIndex = 0; playerSlotIndex < playerItemHandler.getSlots(); playerSlotIndex++) {
-				final ItemStack slotStack = playerItemHandler.getStackInSlot(playerSlotIndex);
-
-				// Stack is empty
-				if (slotStack.isEmpty()) continue;
-
-				// Exempt from our handing
-				if (HotLists.isExempt(slotStack)) continue;
-
-				// Item contains fluid
-				if (slotStack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
-					final IFluidHandlerItem itemFluidHandler = slotStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
-					// Just checked this
-					assert itemFluidHandler != null;
-
-					final FluidStack fluidStack = itemFluidHandler.drain(1, false);
-					// Means it's empty
-					if (fluidStack == null) continue;
-
-					for (final FluidEffect effect : FluidEffect.values()) {
-						if (!effect.isValid(fluidStack)) continue;
-
-						if (hasHotHolder) {
-							damageHotHolder = true;
-							break;
-						}
-
-						// Try to toss an item every 20 ticks (1 second)
-						if (event.world.getTotalWorldTime() % 20 == 0) {
-							effect.interactPlayer.accept(player);
-							if (HotConfig.EFFECT_HANDLING.tossItems) {
-								final ItemStack extractedStack = playerItemHandler.extractItem(playerSlotIndex, slotStack.getCount(), false);
-								player.dropItem(extractedStack, false, true);
-							}
-						}
-					}
-				}
-
-				// Item has TFC heat capability
-				if (slotStack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null)) {
-					if (!HotConfig.EFFECT_HANDLING.handleHotItems) continue;
-
-					final IItemHeat itemHeat = slotStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-					// Just checked this
-					assert itemHeat != null;
-
-					if (itemHeat.getTemperature() >= HotConfig.TEMPERATURE_VALUES.hotItemTemp) {
-
-						if (hasHotHolder) {
-							damageHotHolder = true;
-							break;
-						}
-
-						// Try to toss an item every 20 ticks (1 second)
-						if (event.world.getTotalWorldTime() % 20 == 0) {
-							player.setFire(1);
-							if (HotConfig.EFFECT_HANDLING.tossItems) {
-								final ItemStack extractedStack = playerItemHandler.extractItem(playerSlotIndex, slotStack.getCount(), false);
-								player.dropItem(extractedStack, false, true);
-							}
-						}
-					}
-				}
-
-				// Items added to manual hot config
-				if (HotLists.isHot(slotStack)) {
-
-					if (hasHotHolder) {
-						damageHotHolder = true;
-						break;
-					}
-
-					// Try to toss an item every 20 ticks (1 second)
-					if (event.world.getTotalWorldTime() % 20 == 0) {
-						player.setFire(1);
-						if (HotConfig.EFFECT_HANDLING.tossItems) {
-							final ItemStack extractedStack = playerItemHandler.extractItem(playerSlotIndex, slotStack.getCount(), false);
-							player.dropItem(extractedStack, false, true);
-						}
-					}
-					continue;
-				}
-
-				// Items added to manual cold config
-				if (HotLists.isCold(slotStack)) {
-
-					if (hasHotHolder) {
-						damageHotHolder = true;
-						break;
-					}
-
-					if (event.world.getTotalWorldTime() % 20 == 0) {
-						player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 21, 1));
-						player.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 21, 1));
-					}
-					continue;
-				}
-
-				// Items added to manual gas config
-				if (HotLists.isGaseous(slotStack)) {
-
-					if (hasHotHolder) {
-						damageHotHolder = true;
-						break;
-					}
-
-					if (event.world.getTotalWorldTime() % 20 == 0) {
-						player.addPotionEffect(new PotionEffect(MobEffects.LEVITATION, 21, 1));
-					}
-				}
-			}
-
-			// Damage the item only once, no matter how many effects we prevent
-			if (hasHotHolder && damageHotHolder) {
+			if (tryDoItemEffect(event.world, player, playerItemHandler, heldItemOffhand.getItem() instanceof ItemHotHolder, 0)) {
 				// Prevent divide by 0 & disable the tool damage functionality
 				if (HotConfig.EFFECT_HANDLING.damageRate == 0) continue;
 
 				if (event.world.getTotalWorldTime() % HotConfig.EFFECT_HANDLING.damageRate == 0) {
+
 					heldItemOffhand.damageItem(1, player);
 					// If it's empty the item broke
 					if (heldItemOffhand.isEmpty() && HotConfig.EFFECT_HANDLING.replaceBrokenHotHolder) {
@@ -193,6 +71,60 @@ public class ServerHandler {
 	}
 
 	/**
+	 * Looks through the given item handler and applies effects to the player if needed
+	 *
+	 * @param world World
+	 * @param player The player to apply effects to
+	 * @param itemHandler The item handler, should be the players
+	 * @param preventEffect If the effect should be prevented (holding an item that prevents them)
+	 * @param containerDepth The starting search depth
+	 *
+	 * @return If we handled an effect
+	 */
+	private static boolean tryDoItemEffect(final World world, final EntityPlayer player, final IItemHandler itemHandler,
+			final boolean preventEffect, int containerDepth) {
+		boolean damageHotHolder = false;
+		for (int playerSlotIndex = 0; playerSlotIndex < itemHandler.getSlots(); playerSlotIndex++) {
+			final ItemStack slotStack = itemHandler.getStackInSlot(playerSlotIndex);
+
+			// Stack is empty
+			if (slotStack.isEmpty()) continue;
+
+			// Do the optional recursive check
+			if (HotConfig.EFFECT_HANDLING.checkItemContainerContents && containerDepth < HotConfig.EFFECT_HANDLING.containerDepthLimit) {
+				if (slotStack.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
+					final IItemHandler internalHandler = slotStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+					// Just checked this
+					assert internalHandler != null;
+
+					damageHotHolder = tryDoItemEffect(world, player, internalHandler, preventEffect, ++containerDepth);
+				}
+			}
+
+			for (final ItemEffect effect : ItemEffect.values()) {
+				if (!effect.stackHasEffect(slotStack)) continue;
+
+				// We found an item that has a valid effect, but we should prevent it
+				if (preventEffect) {
+					return true;
+				}
+
+				// Try to toss an item every 20 ticks (1 second)
+				if (world.getTotalWorldTime() % 20 == 0) {
+					effect.doEffect(player);
+					if (effect.doToss && HotConfig.EFFECT_HANDLING.tossItems) {
+						final ItemStack extractedStack = itemHandler.extractItem(playerSlotIndex, slotStack.getCount(), false);
+						player.dropItem(extractedStack, false, true);
+					}
+				}
+			}
+		}
+
+		return damageHotHolder;
+	}
+
+
+	/**
 	 * Searches through the player inventory for a {@link ItemHotHolder} if one is found it sets the offhand to this stack
 	 *
 	 * @param player Player entity
@@ -200,7 +132,7 @@ public class ServerHandler {
 	 *
 	 * @return If a Hot Holder item was able to be found
 	 */
-	public static boolean findAndReplaceHotHolder(final EntityPlayer player, final IItemHandler playerItemHandler) {
+	private static boolean findAndReplaceHotHolder(final EntityPlayer player, final IItemHandler playerItemHandler) {
 		for (int slotIndex = 0; slotIndex < playerItemHandler.getSlots(); slotIndex++) {
 			final ItemStack slotStack = playerItemHandler.getStackInSlot(slotIndex);
 
