@@ -1,7 +1,7 @@
 package com.buuz135.hotornot;
 
 import com.buuz135.hotornot.config.HotConfig;
-import com.buuz135.hotornot.network.SyncClientLists;
+import com.buuz135.hotornot.network.SyncClientConfig;
 import com.buuz135.hotornot.object.item.ItemHotHolder;
 import com.buuz135.hotornot.util.ItemEffect;
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,7 +30,7 @@ public class ServerHandler {
 	@SubscribeEvent
 	public static void onPlayerLogin(final PlayerLoggedInEvent event) {
 		// TODO need to sync more values
-		HotOrNot.getNetwork().sendTo(new SyncClientLists(), (EntityPlayerMP) event.player);
+		HotOrNot.getNetwork().sendTo(new SyncClientConfig(), (EntityPlayerMP) event.player);
 		HotOrNot.getLog().info("Synced server lists with {}", event.player.getName());
 	}
 

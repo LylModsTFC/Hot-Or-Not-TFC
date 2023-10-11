@@ -21,7 +21,7 @@
  */
 package com.buuz135.hotornot;
 
-import com.buuz135.hotornot.network.SyncClientLists;
+import com.buuz135.hotornot.network.SyncClientConfig;
 import com.buuz135.hotornot.util.HotOrNotTab;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.fml.common.Mod;
@@ -65,6 +65,6 @@ public class HotOrNot {
 	public void onPreInit(final FMLPreInitializationEvent event) {
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new HotGuiHandler());
 		network = NetworkRegistry.INSTANCE.newSimpleChannel(MOD_ID);
-		network.registerMessage(new SyncClientLists.Handler(), SyncClientLists.class, 1, Side.CLIENT);
+		network.registerMessage(new SyncClientConfig.Handler(), SyncClientConfig.class, 1, Side.CLIENT);
 	}
 }
