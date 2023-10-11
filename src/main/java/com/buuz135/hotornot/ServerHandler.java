@@ -55,14 +55,19 @@ public class ServerHandler {
 
 				if (event.world.getTotalWorldTime() % HotConfig.EFFECT_HANDLING.damageRate == 0) {
 
-					heldItemOffhand.damageItem(1, player);
-					// If it's empty the item broke
-					if (heldItemOffhand.isEmpty() && HotConfig.EFFECT_HANDLING.replaceBrokenHotHolder) {
-						if (findAndReplaceHotHolder(player, playerItemHandler)) {
-							event.world.playSound(null, player.posX, player.posY, player.posZ,
-									SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS,
-									0.8F,
-									0.8F + player.world.rand.nextFloat() * 0.4F);
+					final float damageChance = ((ItemHotHolder) heldItemOffhand.getItem()).damageChance(heldItemOffhand);
+
+					if (event.world.rand.nextFloat() < damageChance) {
+						heldItemOffhand.damageItem(1, player);
+
+						// If it's empty the item broke
+						if (heldItemOffhand.isEmpty() && HotConfig.EFFECT_HANDLING.replaceBrokenHotHolder) {
+							if (findAndReplaceHotHolder(player, playerItemHandler)) {
+								event.world.playSound(null, player.posX, player.posY, player.posZ,
+										SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS,
+										0.8F,
+										0.8F + player.world.rand.nextFloat() * 0.4F);
+							}
 						}
 					}
 				}
@@ -82,7 +87,7 @@ public class ServerHandler {
 	 * @return If we handled an effect
 	 */
 	private static boolean tryDoItemEffect(final World world, final EntityPlayer player, final IItemHandler itemHandler,
-			final boolean preventEffect, int containerDepth) {
+			final boolean preventEffect, final int containerDepth) {
 		boolean damageHotHolder = false;
 		for (int playerSlotIndex = 0; playerSlotIndex < itemHandler.getSlots(); playerSlotIndex++) {
 			final ItemStack slotStack = itemHandler.getStackInSlot(playerSlotIndex);
@@ -97,7 +102,7 @@ public class ServerHandler {
 					// Just checked this
 					assert internalHandler != null;
 
-					damageHotHolder = tryDoItemEffect(world, player, internalHandler, preventEffect, ++containerDepth);
+					damageHotHolder = tryDoItemEffect(world, player, internalHandler, preventEffect, containerDepth + 1);
 				}
 			}
 
@@ -112,9 +117,11 @@ public class ServerHandler {
 				// Try to toss an item every 20 ticks (1 second)
 				if (world.getTotalWorldTime() % 20 == 0) {
 					effect.doEffect(player);
-					if (effect.doToss && HotConfig.EFFECT_HANDLING.tossItems) {
+					// TODO toss the item in the player inventory and remove the baindaid containerDepth check which prevents
+					//  the contents of a item container from being thrown
+					if (effect.doToss && HotConfig.EFFECT_HANDLING.tossItems && containerDepth == 0) {
 						final ItemStack extractedStack = itemHandler.extractItem(playerSlotIndex, slotStack.getCount(), false);
-						player.dropItem(extractedStack, false, true);
+						player.dropItem(extractedStack, true);
 					}
 				}
 			}

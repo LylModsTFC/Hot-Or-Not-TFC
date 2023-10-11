@@ -37,6 +37,18 @@ public enum ItemEffect {
 			TextFormatting.RED,
 			"tooltip.hotornot.toohot",
 			true),
+	HOT_ITEM(itemStack -> {
+		if (!HotConfig.EFFECT_HANDLING.handleHotItems) return false;
+
+		final IItemHeat itemHeat = itemStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+		// Just checked this
+		if (itemHeat == null) return false;
+
+		return itemHeat.getTemperature() >= HotConfig.TEMPERATURE_VALUES.hotItemTemp;
+	}, player -> player.setFire(1),
+			TextFormatting.RED,
+			"tooltip.hotornot.item_hot",
+			true),
 	FLUID_COLD(itemStack -> {
 		if (!HotConfig.EFFECT_HANDLING.handleColdFluids) return false;
 
@@ -79,19 +91,7 @@ public enum ItemEffect {
 			player -> player.addPotionEffect(new PotionEffect(MobEffects.LEVITATION, 21, 1)),
 			TextFormatting.YELLOW,
 			"tooltip.hotornot.toolight",
-			false),
-	HOT_ITEM(itemStack -> {
-		if (!HotConfig.EFFECT_HANDLING.handleHotItems) return false;
-
-		final IItemHeat itemHeat = itemStack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-		// Just checked this
-		if (itemHeat == null) return false;
-
-		return itemHeat.getTemperature() >= HotConfig.TEMPERATURE_VALUES.hotItemTemp;
-	}, player -> player.setFire(1),
-			TextFormatting.RED,
-			"tooltip.hotornot.item_hot",
-			true);
+			false);
 
 	public final Predicate<ItemStack> effectPredicate;
 	public final Consumer<EntityPlayer> interactPlayer;
