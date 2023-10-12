@@ -34,11 +34,11 @@ public final class ClientEvents {
 			// This stack doesn't have this effect
 			if (!effect.stackHasEffect(itemStack)) {
 				if (checkContents) {
-					final IItemHandler temp = itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+					final IItemHandler itemHandler = itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 					// Checked this in order to reach here
-					assert temp != null;
+					assert itemHandler != null;
 
-					if (contentsHaveEffect(temp, effect, 0)) {
+					if (ItemEffect.contentsHaveEffect(itemHandler, effect)) {
 						event.getToolTip().add(effect.color + I18n.format(effect.tooltip));
 					}
 				}
@@ -47,35 +47,5 @@ public final class ClientEvents {
 
 			event.getToolTip().add(effect.color + I18n.format(effect.tooltip));
 		}
-	}
-
-	/**
-	 * Checks if any of the contents of this item have the effect
-	 *
-	 * @param itemHandler Item handler to search
-	 * @param effect The effect to check for
-	 * @param containerDepth The depth of the search
-	 *
-	 * @return If any of the contents have the item effect
-	 */
-	private static boolean contentsHaveEffect(final IItemHandler itemHandler, final ItemEffect effect, int containerDepth) {
-		for (int slotIndex = 0; slotIndex < itemHandler.getSlots(); slotIndex++) {
-			final ItemStack slotStack = itemHandler.getStackInSlot(slotIndex);
-
-			if (effect.stackHasEffect(slotStack)) return true;
-
-			if (containerDepth < HotConfig.EFFECT_HANDLING.containerDepthLimit) {
-				if (slotStack.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
-					final IItemHandler internalHandler = slotStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-					// Just checked this
-					assert internalHandler != null;
-
-					if (contentsHaveEffect(itemHandler, effect, ++containerDepth)) {
-						return true;
-					}
-				}
-			}
-		}
-		return false;
 	}
 }

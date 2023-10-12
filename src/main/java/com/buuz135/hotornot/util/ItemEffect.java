@@ -12,6 +12,8 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -107,6 +109,44 @@ public enum ItemEffect {
 		this.color = color;
 		this.tooltip = tooltip;
 		this.doToss = doToss;
+	}
+
+	/**
+	 * Checks if any of the contents of this item have the effect
+	 *
+	 * @param itemHandler Item handler to search
+	 * @param effect The effect to check for
+	 *
+	 * @return If any of the contents have the item effect
+	 */
+	public static boolean contentsHaveEffect(final IItemHandler itemHandler, final ItemEffect effect) {
+		return contentsHaveEffect(itemHandler, effect, 0);
+	}
+
+
+	/**
+	 * Full implementation of {@link ItemEffect#contentsHaveEffect(IItemHandler, ItemEffect)}
+	 */
+	private static boolean contentsHaveEffect(final IItemHandler itemHandler, final ItemEffect effect, final int containerDepth) {
+		for (int slotIndex = 0; slotIndex < itemHandler.getSlots(); slotIndex++) {
+			final ItemStack slotStack = itemHandler.getStackInSlot(slotIndex);
+
+			if (effect.stackHasEffect(slotStack)) return true;
+
+			if (containerDepth < HotConfig.EFFECT_HANDLING.containerDepthLimit) {
+				if (slotStack.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
+					final IItemHandler internalHandler = slotStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+					// Just checked this
+					assert internalHandler != null;
+
+					if (contentsHaveEffect(itemHandler, effect, containerDepth + 1)) {
+						return true;
+					}
+				}
+			}
+		}
+
+		return false;
 	}
 
 	/**

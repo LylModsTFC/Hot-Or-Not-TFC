@@ -1,7 +1,7 @@
 package com.buuz135.hotornot.network;
 
 import com.buuz135.hotornot.HotOrNot;
-import com.buuz135.hotornot.ServerHandler;
+import com.buuz135.hotornot.ServerEvents;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -42,7 +42,7 @@ public class PacketClientSettings implements IMessage {
 		public IMessage onMessage(final PacketClientSettings message, final MessageContext ctx) {
 			final EntityPlayer player = ctx.getServerHandler().player;
 			if (player == null) return null;
-			ServerHandler.setReplaceHotHolderConfigForPlayer(player, message.replaceBrokenHotHolder);
+			ServerEvents.setReplaceHotHolderConfigForPlayer(player, message.replaceBrokenHotHolder);
 			HotOrNot.getLog().info("Player {} has replace as {}", player.getName(), message.replaceBrokenHotHolder);
 			return null;
 		}
