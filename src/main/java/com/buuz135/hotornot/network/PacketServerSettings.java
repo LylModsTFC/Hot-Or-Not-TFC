@@ -25,6 +25,10 @@ public class PacketServerSettings implements IMessage {
 	private int hotFluidTemp;
 	private int coldFluidTemp;
 
+	@Deprecated
+	public PacketServerSettings() {
+	}
+
 	public PacketServerSettings(final List<Item> hotList, final List<Item> coldList, final List<Item> gaseousList, final List<Item> exemptionList,
 			final int hotItemTemp, final int hotFluidTemp, final int coldFluidTemp) {
 		this.hotList = hotList;
