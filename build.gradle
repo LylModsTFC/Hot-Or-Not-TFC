@@ -1,121 +1,92 @@
 buildscript {
     repositories {
-        jcenter()
-        mavenCentral()
-        maven {
-            name = "forge"
-            url = "https://files.minecraftforge.net/maven"
-        }
+        maven { url = "https://files.minecraftforge.net/maven" }
     }
     dependencies {
         classpath "net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT"
-//        classpath 'com.selesse:gradle-git-changelog:0.2.+'
-        classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.0.10"
     }
 }
-plugins {
-    id "com.github.hierynomus.license" version "0.14.0"
-    id "com.matthewprenger.cursegradle" version "1.0.10"
-}
+
 apply plugin: "net.minecraftforge.gradle.forge"
-//apply plugin: 'com.selesse.git.changelog'
-apply plugin: 'java'
 
-String b = ""
-if (project.hasProperty("teamcity")) {
-    b = System.getenv("BUILD_NUMBER")
-}
-
-if (b == null || b == "") {
-    version = "${project.minecraftVersion}-${modVersion}"
-} else {
-    version = "${project.minecraftVersion}-${modVersion}-" + b
-}
+version = modVersion
 group = modGroup
 archivesBaseName = modBaseName
 
-minecraft {
-    version = project.forgeVersion
-    runDir = "run"
-
-    // the mappings can be changed at any time, and must be in the following format.
-    // snapshot_YYYYMMDD   snapshot are built nightly.
-    // stable_#            stables are built at the discretion of the MCP team.
-    // Use non-default mappings at your own risk. they may not always work.
-    // simply re-run your setup task after changing the mappings to update your workspace.
-    mappings = project.mcpVersion
-    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
-}
+sourceCompatibility = targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
+    // Curse
+    maven {
+        url = "https://cursemaven.com"
+    }
+    // JEI
+    maven {
+        name = "Progwml6 maven"
+        url = "https://dvs1.progwml6.com/files/maven/"
+    }
+    // JEI fallback
+    maven {
+        name = "ModMaven"
+        url = "https://modmaven.dev"
+    }
+}
+
+minecraft {
+    version = "${project.minecraftVersion}-${project.forgeVersion}"
+    runDir = "run"
+    mappings = project.minecraftMappings
+
+    clientJvmArgs += "-Xmx4G"
+    clientJvmArgs += "-Xms4G"
+
+    clientRunArgs += ["--username", "Dev"]
+    clientJvmArgs += "-Dfml.doNotBackup=true"
+
+    replace("\${MODID}", project.modID)
+    replace("\${MODNAME}", project.modName)
+    replace("\${VERSION}", project.modVersion)
+    replaceIn("${project.modClass}.java")
 }
 
 dependencies {
+    deobfCompile("curse.maven:TerraFirmaCraft-${project.tfcProjectID}:${project.tfcProjectFile}")
+
+    // Compile against the JEI API but do not include it at runtime
+    deobfProvided("mezz.jei:jei_${project.minecraftVersion}:4.15.0.291:api")
+    // At runtime, use the full JEI jar
+    runtime("mezz.jei:jei_${project.minecraftVersion}:4.15.0.291")
 }
 
 processResources {
     // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
+    inputs.property("moid", modID)
+    inputs.property("modname", modName)
+    inputs.property("version", project.version)
+    inputs.property("mcversion", project.minecraft.version)
 
-    // replace stuff in mcmod.info, nothing else
+    // replace stuff in mcmod.info and pack.mcmeta
     from(sourceSets.main.resources.srcDirs) {
-        include "mcmod.info"
+        include("mcmod.info", "pack.mcmeta")
 
-        // replace version and mcversion
-        expand "version": project.version, "mcversion": project.minecraft.version
+        // replace version, mcversion, modid, and modname
+        expand("version": project.version, "mcversion": project.minecraft.version, "modname": modName, "modid": modID)
     }
 
-    // copy everything else, thats not the mcmod.info
+    // copy everything else
     from(sourceSets.main.resources.srcDirs) {
-        exclude "mcmod.info"
+        exclude("mcmod.info", "pack.mcmeta")
+    }
+
+    // Copy lisence from project root
+    from(".") {
+        include("LICENSE")
     }
 }
 
-license {
-    header rootProject.file('HEADER')
-    include "**/*.java"
-    ext.year = Calendar.getInstance().get(Calendar.YEAR)
-    ext.name = 'Buuz135'
-    ignoreFailures = true
-    mapping {
-        java='SLASHSTAR_STYLE'
-    }
+
+project.tasks.withType(Jar) { jarTask ->
+    // Add the minecraft version to result in HotOrNotPlus-${mcversion}-${version}
+    jarTask.appendix = project.minecraft.version
 }
-
-//changelog {
-//    title = "Hot Or Not"
-//    fileName = "CHANGELOG.md"
-//    outputDirectory = file("$projectDir")
-//    since = '1.0.1'
-//    commitFormat = '%s (%an)'
-//    markdown {
-//        commitFormat = '* %s (%an)'
-//    }
-//    includeLines = {
-//        !it.contains("Merge")
-//    }
-//    processLines = {
-//        String input = it as String
-//        if (input.contains('[ci skip] ')) {
-//            input = input.minus('[ci skip] ')
-//        }
-//        input
-//    }
-//}
-
-//tasks.curseforge.enabled =  project.hasProperty('curse_api')
-
-//curseforge {
-//    if (project.hasProperty('curse_api')) {
-//        apiKey = project.curse_api
-//    }
-//    project {
-//        id = '293536'
-//        changelog = file('CHANGELOG.md')
-//        changelogType = 'markdown'
-//        releaseType = 'beta'
-//    }
-//}
-

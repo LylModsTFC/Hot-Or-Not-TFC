@@ -1,98 +1,46 @@
 package com.buuz135.hotornot.config;
 
+import com.buuz135.hotornot.HotOrNot;
+import com.buuz135.hotornot.network.PacketClientSettings;
 import net.minecraftforge.common.config.Config;
+import net.minecraftforge.common.config.Config.Comment;
+import net.minecraftforge.common.config.Config.LangKey;
+import net.minecraftforge.common.config.Config.Type;
 import net.minecraftforge.common.config.ConfigManager;
-import net.minecraftforge.fml.client.event.ConfigChangedEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import com.buuz135.hotornot.HotOrNot;
+import static com.buuz135.hotornot.HotOrNot.MOD_ID;
+import static com.buuz135.hotornot.HotOrNot.MOD_NAME;
 
-@Config(modid = HotOrNot.MOD_ID)
-public class HotConfig
-{
-    @Config.Comment("If true, hot effects for items will be enabled")
-    public static boolean HOT_ITEMS = true;
+@EventBusSubscriber(modid = MOD_ID)
+@Config(modid = MOD_ID, type = Type.INSTANCE, name = MOD_NAME)
+public class HotConfig {
 
-    @Config.Comment("If true, hot effects for fluids will be enabled")
-    public static boolean HOT_FLUIDS = true;
+	@LangKey("config." + MOD_ID + ".manual_entries")
+	@Comment("Configuration for manually added items." +
+			"Items are in the format <mod_id>:<registry_name> same as what you see in F3 + H")
+	public static final ManualEntries MANUAL_ENTRIES = new ManualEntries();
 
-    @Config.Comment("If true, cold effects for fluids will be enabled")
-    public static boolean COLD_FLUIDS = true;
+	@LangKey("config." + MOD_ID + ".temperature_values")
+	@Comment("Configuration for the temperature thresholds the effects happen at. Values are in Celsius")
+	public static final TemperatureValues TEMPERATURE_VALUES = new TemperatureValues();
 
-    @Config.Comment("If true, gaseous effects for fluids will be enabled")
-    public static boolean GASEOUS_FLUIDS = true;
+	@LangKey("config." + MOD_ID + ".effect_handling")
+	@Comment("Configuration relating to effect handling")
+	public static final EffectHandling EFFECT_HANDLING = new EffectHandling();
 
-    @Config.Comment("If true, items causing effects will get a tooltip")
-    public static boolean TOOLTIP = true;
+	@LangKey("config." + MOD_ID + ".render_effect_tooltip")
+	@Comment("If true, items causing effects will get a tooltip")
+	public static boolean renderEffectTooltip = true;
 
-    @Config.Comment("If true, hot items make the player yeet them")
-    public static boolean YEET = true;
-
-    @Config.Comment("How hot a fluid should be to start burning the player (in Celsius)")
-    public static int HOT_FLUID = 480;
-
-    @Config.Comment("How cold a fluid should be to start adding effects the player (in Celsius)")
-    public static int COLD_FLUID = 0;
-
-    @Config.Comment("How hot an item should be to start burning the player (in Celsius)")
-    public static int HOT_ITEM = 480;
-
-    @Config.Comment("Max durability of the wooden tongs, 0 for infinite durability")
-    public static int WOODEN_TONGS_DURABILITY = 120;
-
-    @Config.Comment("Max durability of the mitts, 0 for infinite durability")
-    public static int MITTS_DURABILITY = 12000;
-
-    @Config.Comment("Max durability of the tongs, 0 for infinite durability")
-    public static int COPPER_TONGS_DURABILITY = 1000;
-
-    @Config.Comment("Max durability of the tongs, 0 for infinite durability")
-    public static int BRONZE_TONGS_DURABILITY = 2000;
-
-    @Config.Comment("Max durability of the tongs, 0 for infinite durability")
-    public static int BISMUTH_BRONZE_TONGS_DURABILITY = 2200;
-
-    @Config.Comment("Max durability of the tongs, 0 for infinite durability")
-    public static int BLACK_BRONZE_TONGS_DURABILITY = 1800;
-
-    @Config.Comment("Max durability of the tongs, 0 for infinite durability")
-    public static int WROUGHT_IRON_TONGS_DURABILITY = 3000;
-
-    @Config.Comment("Max durability of the tongs, 0 for infinite durability")
-    public static int STEEL_TONGS_DURABILITY = 4000;
-
-    @Config.Comment("Max durability of the tongs, 0 for infinite durability")
-    public static int BLACK_STEEL_TONGS_DURABILITY = 6000;
-
-    @Config.Comment("Max durability of the tongs, 0 for infinite durability")
-    public static int RED_STEEL_TONGS_DURABILITY = 12000;
-
-    @Config.Comment("Max durability of the tongs, 0 for infinite durability")
-    public static int BLUE_STEEL_TONGS_DURABILITY = 12000;
-
-    @Config.Comment("Hot items that are included manually")
-    public static String[] HOT_ITEM_ADDITIONS = new String[] {"minecraft:blaze_rod"};
-
-    @Config.Comment("Cold items that are included manually")
-    public static String[] COLD_ITEM_ADDITIONS = new String[] {"minecraft:ice", "minecraft:packed_ice"};
-
-    @Config.Comment("Gaseous items that are included manually")
-    public static String[] GASEOUS_ITEM_ADDITIONS = new String[] {"mod_id:item"};
-
-    @Config.Comment("Items that are excluded")
-    public static String[] ITEM_REMOVALS = new String[] {"immersiveengineering:drill", "immersiveengineering:chemthrower", "immersivepetroleum:fluid_diesel", "immersivepetroleum:fluid_gasoline"};
-
-    @Mod.EventBusSubscriber(modid = HotOrNot.MOD_ID)
-    private static class EventHandler
-    {
-        @SubscribeEvent
-        public static void onConfigChanged(final ConfigChangedEvent.OnConfigChangedEvent event)
-        {
-            if (event.getModID().equals(HotOrNot.MOD_ID))
-            {
-                ConfigManager.sync(HotOrNot.MOD_ID, Config.Type.INSTANCE);
-            }
-        }
-    }
+	@SubscribeEvent
+	public static void onConfigChanged(final OnConfigChangedEvent event) {
+		if (event.getModID().equals(MOD_ID)) {
+			ConfigManager.sync(MOD_ID, Type.INSTANCE);
+			// Update server in case this config changes
+			HotOrNot.getNetwork().sendToServer(new PacketClientSettings(EFFECT_HANDLING.replaceBrokenHotHolder));
+		}
+	}
 }

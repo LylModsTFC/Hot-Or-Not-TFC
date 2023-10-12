@@ -1,25 +1,6 @@
 {
-  "parent": "hotornot:item/item",
+  "parent": "item/generated",
   "textures": {
     "layer0": "hotornot:items/wooden_tongs"
-  },
-  "display": {
-    "firstperson_lefthand": {
-      "rotation": [
-        0,
-        90,
-        -25
-      ],
-      "translation": [
-        1.13,
-        3.2,
-        1.13
-      ],
-      "scale": [
-        0.68,
-        0.68,
-        0.68
-      ]
-    }
   }
 }

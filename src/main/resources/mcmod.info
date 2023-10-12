@@ -1,22 +1,26 @@
 [
   {
-    "modid": "hotornot",
-    "name": "Hot Or Not - TFC",
-    "description": "Is this hot?",
+    "modid": "${modid}",
+    "name": "${modname}",
+    "description": "Is this hot or is it not?",
     "version": "${version}",
     "mcversion": "${mcversion}",
-    "url": "",
+    "url": "https://github.com/TerraFirmaCraftNetwork/HotOrNotTFC",
     "updateUrl": "",
+    "credits": "",
     "authorList": [
       "Buuz135",
       "Affehund",
-      "ACGaming"
-      "Lylythii"
+      "ACGaming",
+      "Lylythii",
+      "Traister101"
     ],
-    "credits": "",
     "logoFile": "hotornottfc.png",
-    "screenshots": [],
+    "requiredMods": [
+      "tfc"
+    ],
     "dependencies": [
+      "tfc"
     ]
   }
 ]
