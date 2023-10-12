@@ -1,5 +1,7 @@
 package com.buuz135.hotornot.config;
 
+import com.buuz135.hotornot.HotOrNot;
+import com.buuz135.hotornot.network.PacketClientSettings;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.Config.Comment;
 import net.minecraftforge.common.config.Config.LangKey;
@@ -37,6 +39,8 @@ public class HotConfig {
 	public static void onConfigChanged(final OnConfigChangedEvent event) {
 		if (event.getModID().equals(MOD_ID)) {
 			ConfigManager.sync(MOD_ID, Type.INSTANCE);
+			// Update server in case this config changes
+			HotOrNot.getNetwork().sendToServer(new PacketClientSettings(EFFECT_HANDLING.replaceBrokenHotHolder));
 		}
 	}
 }

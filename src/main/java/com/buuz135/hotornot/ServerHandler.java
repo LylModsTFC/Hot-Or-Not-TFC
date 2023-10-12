@@ -1,7 +1,7 @@
 package com.buuz135.hotornot;
 
 import com.buuz135.hotornot.config.HotConfig;
-import com.buuz135.hotornot.network.SyncClientConfig;
+import com.buuz135.hotornot.config.HotLists;
 import com.buuz135.hotornot.object.item.ItemHotHolder;
 import com.buuz135.hotornot.util.ItemEffect;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,6 +15,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -22,16 +23,46 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.HashMap;
+import java.util.Map;
 
 @ParametersAreNonnullByDefault
 @EventBusSubscriber(modid = HotOrNot.MOD_ID)
 public class ServerHandler {
 
+	private static final Map<EntityPlayer, Boolean> PLAYER_REPLACE_BROKEN_HOTHOLDER_MAP = new HashMap<>();
+
 	@SubscribeEvent
 	public static void onPlayerLogin(final PlayerLoggedInEvent event) {
 		// TODO need to sync more values
-		HotOrNot.getNetwork().sendTo(new SyncClientConfig(), (EntityPlayerMP) event.player);
+		HotOrNot.getNetwork().sendTo(HotLists.getServerConfigPacket(), (EntityPlayerMP) event.player);
 		HotOrNot.getLog().info("Synced server lists with {}", event.player.getName());
+	}
+
+	@SubscribeEvent
+	public static void onPlayerLogout(final PlayerLoggedOutEvent event) {
+		PLAYER_REPLACE_BROKEN_HOTHOLDER_MAP.remove(event.player);
+	}
+
+	/**
+	 * Saves the player hot holder replacement config
+	 *
+	 * @param player The player
+	 * @param replaceBrokenHotHolder If this player wants their hot holders to be replaced or not
+	 */
+	public static void setReplaceHotHolderConfigForPlayer(final EntityPlayer player, final boolean replaceBrokenHotHolder) {
+		PLAYER_REPLACE_BROKEN_HOTHOLDER_MAP.put(player, replaceBrokenHotHolder);
+	}
+
+	/**
+	 * Checks if the given player wants their hot holders to be replaced on break
+	 *
+	 * @param player The player to check
+	 *
+	 * @return If the hot holder should be replaced for this player
+	 */
+	public static boolean shouldReplaceHotHolder(final EntityPlayer player) {
+		return PLAYER_REPLACE_BROKEN_HOTHOLDER_MAP.get(player);
 	}
 
 	@SubscribeEvent
@@ -60,8 +91,12 @@ public class ServerHandler {
 					if (event.world.rand.nextFloat() < damageChance) {
 						heldItemOffhand.damageItem(1, player);
 
+						if (!shouldReplaceHotHolder(player)) continue;
+
 						// If it's empty the item broke
-						if (heldItemOffhand.isEmpty() && HotConfig.EFFECT_HANDLING.replaceBrokenHotHolder) {
+						if (!heldItemOffhand.isEmpty()) continue;
+
+						if (HotConfig.EFFECT_HANDLING.replaceBrokenHotHolder) {
 							if (findAndReplaceHotHolder(player, playerItemHandler)) {
 								event.world.playSound(null, player.posX, player.posY, player.posZ,
 										SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS,

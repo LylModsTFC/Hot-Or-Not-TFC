@@ -21,9 +21,11 @@
  */
 package com.buuz135.hotornot;
 
-import com.buuz135.hotornot.network.SyncClientConfig;
-import com.buuz135.hotornot.util.HotOrNotTab;
+import com.buuz135.hotornot.network.PacketClientSettings;
+import com.buuz135.hotornot.network.PacketServerSettings;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -41,7 +43,13 @@ public class HotOrNot {
 	public static final String MOD_NAME = "${MODNAME}";
 	public static final String VERSION = "${VERSION}";
 
-	public static final CreativeTabs HOTORNOT_TAB = new HotOrNotTab();
+	public static final CreativeTabs HOTORNOT_TAB = new CreativeTabs(MOD_ID) {
+		@Override
+		public ItemStack createIcon() {
+			//ToDo: Replace with TFC Blue Steel Lava Bucket
+			return new ItemStack(Items.LAVA_BUCKET);
+		}
+	};
 
 	@Instance
 	private static HotOrNot INSTANCE = null;
@@ -65,6 +73,7 @@ public class HotOrNot {
 	public void onPreInit(final FMLPreInitializationEvent event) {
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new HotGuiHandler());
 		network = NetworkRegistry.INSTANCE.newSimpleChannel(MOD_ID);
-		network.registerMessage(new SyncClientConfig.Handler(), SyncClientConfig.class, 1, Side.CLIENT);
+		network.registerMessage(new PacketServerSettings.Handler(), PacketServerSettings.class, 1, Side.CLIENT);
+		network.registerMessage(new PacketClientSettings.Handler(), PacketClientSettings.class, 2, Side.SERVER);
 	}
 }

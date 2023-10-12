@@ -1,12 +1,11 @@
 package com.buuz135.hotornot.config;
 
-import io.netty.buffer.ByteBuf;
+import com.buuz135.hotornot.network.PacketServerSettings;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
@@ -17,28 +16,28 @@ import java.util.Objects;
 @ParametersAreNonnullByDefault
 public final class HotLists {
 
-	private static final List<Item> hotList = new ArrayList<>();
-	private static final List<Item> coldList = new ArrayList<>();
-	private static final List<Item> gaseousList = new ArrayList<>();
-	private static final List<Item> exemptionList = new ArrayList<>();
+	private static final List<Item> HOT_LIST = new ArrayList<>();
+	private static final List<Item> COLD_LIST = new ArrayList<>();
+	private static final List<Item> GASEOUS_LIST = new ArrayList<>();
+	private static final List<Item> EXEMPTION_LIST = new ArrayList<>();
 
 	static {
 		Arrays.stream(HotConfig.MANUAL_ENTRIES.itemRemovals)
 				.map(itemRemoval -> Item.REGISTRY.getObject(new ResourceLocation(itemRemoval)))
 				.filter(Objects::nonNull)
-				.forEach(exemptionList::add);
+				.forEach(EXEMPTION_LIST::add);
 		Arrays.stream(HotConfig.MANUAL_ENTRIES.hotItemAdditions)
 				.map(itemRegistryName -> Item.REGISTRY.getObject(new ResourceLocation(itemRegistryName)))
 				.filter(Objects::nonNull)
-				.forEach(hotList::add);
+				.forEach(HOT_LIST::add);
 		Arrays.stream(HotConfig.MANUAL_ENTRIES.coldItemAdditions)
 				.map(itemRegistryName -> Item.REGISTRY.getObject(new ResourceLocation(itemRegistryName)))
 				.filter(Objects::nonNull)
-				.forEach(coldList::add);
+				.forEach(COLD_LIST::add);
 		Arrays.stream(HotConfig.MANUAL_ENTRIES.gaseousItemAdditions)
 				.map(itemRegistryName -> Item.REGISTRY.getObject(new ResourceLocation(itemRegistryName)))
 				.filter(Objects::nonNull)
-				.forEach(gaseousList::add);
+				.forEach(GASEOUS_LIST::add);
 	}
 
 	/**
@@ -50,7 +49,7 @@ public final class HotLists {
 	 */
 	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 	public static boolean isExempt(final ItemStack itemStack) {
-		return exemptionList.contains(itemStack.getItem());
+		return EXEMPTION_LIST.contains(itemStack.getItem());
 	}
 
 	/**
@@ -61,7 +60,7 @@ public final class HotLists {
 	 * @return If the item is considered hot
 	 */
 	public static boolean isHot(final ItemStack itemStack) {
-		return !isExempt(itemStack) && hotList.contains(itemStack.getItem());
+		return !isExempt(itemStack) && HOT_LIST.contains(itemStack.getItem());
 	}
 
 	/**
@@ -72,7 +71,7 @@ public final class HotLists {
 	 * @return If the item is considered cold
 	 */
 	public static boolean isCold(final ItemStack itemStack) {
-		return !isExempt(itemStack) && coldList.contains(itemStack.getItem());
+		return !isExempt(itemStack) && COLD_LIST.contains(itemStack.getItem());
 	}
 
 	/**
@@ -83,36 +82,30 @@ public final class HotLists {
 	 * @return If the item is considered gaseous
 	 */
 	public static boolean isGaseous(final ItemStack itemStack) {
-		return !isExempt(itemStack) && gaseousList.contains(itemStack.getItem());
+		return !isExempt(itemStack) && GASEOUS_LIST.contains(itemStack.getItem());
 	}
 
 	/**
-	 * Writes our lists to the packet buffer
-	 *
-	 * @param buf Buffer to populate with our lists
+	 * @return A packet containing the server settings to be sent to a client
 	 */
-	public static void writeListsToByteBuf(final ByteBuf buf) {
-		ByteBufUtils.writeRegistryEntries(buf, exemptionList);
-		ByteBufUtils.writeRegistryEntries(buf, hotList);
-		ByteBufUtils.writeRegistryEntries(buf, coldList);
-		ByteBufUtils.writeRegistryEntries(buf, gaseousList);
+	public static PacketServerSettings getServerConfigPacket() {
+		return new PacketServerSettings(HOT_LIST, COLD_LIST, GASEOUS_LIST, EXEMPTION_LIST, HotConfig.TEMPERATURE_VALUES.hotItemTemp,
+				HotConfig.TEMPERATURE_VALUES.hotFluidTemp, HotConfig.TEMPERATURE_VALUES.coldFluidTemp);
 	}
 
 	/**
-	 * Clears then reads out lists from the buffer
-	 *
-	 * @param buf Buffer to populate our lists from
+	 * Clears then fills the lists with the items provided, used to ensure the client tooltips are accurate
 	 */
-	public static void readListsFromByteBuf(final ByteBuf buf) {
-		final IForgeRegistry<Item> temp = GameRegistry.findRegistry(Item.class);
-
-		exemptionList.clear();
-		exemptionList.addAll(ByteBufUtils.readRegistryEntries(buf, temp));
-		hotList.clear();
-		hotList.addAll(ByteBufUtils.readRegistryEntries(buf, temp));
-		coldList.clear();
-		coldList.addAll(ByteBufUtils.readRegistryEntries(buf, temp));
-		gaseousList.clear();
-		gaseousList.addAll(ByteBufUtils.readRegistryEntries(buf, temp));
+	@SideOnly(Side.CLIENT)
+	public static void overRideListsTo(final List<Item> exemptionList, final List<Item> hotList, final List<Item> coldList,
+			final List<Item> gaseousList) {
+		EXEMPTION_LIST.clear();
+		EXEMPTION_LIST.addAll(exemptionList);
+		HOT_LIST.clear();
+		HOT_LIST.addAll(hotList);
+		COLD_LIST.clear();
+		COLD_LIST.addAll(coldList);
+		GASEOUS_LIST.clear();
+		GASEOUS_LIST.addAll(gaseousList);
 	}
 }
