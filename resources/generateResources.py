@@ -56,6 +56,39 @@ def generateLang() -> None:
         lang.writeItem(f"hotornot.metal.tongs.{metal}", f"{name} Tongs")
         lang.writeItem(f"hotornot.metal.tongs_jaw.{metal}", f"{name} Tongs Jaw Piece")
 
+    lang.writeHeader("Config")
+    configKey = "config.hotornot"
+    lang.writeComment("Manual Entries Category")
+    lang.write(f"{configKey}.manual_entries", "Manual Entries")
+    lang.write(f"{configKey}.manual_entries.hot_item_additions", "Hot Items")
+    lang.write(f"{configKey}.manual_entries.cold_item_additions", "Cold Items")
+    lang.write(f"{configKey}.manual_entries.gaseous_item_additions", "Gaseous Items")
+    lang.write(f"{configKey}.manual_entries.item_removals", "Item Exclusions")
+    # Temperature Values Category
+    lang.newLine()
+    lang.writeComment("Temperature Values Category")
+    lang.write(f"{configKey}.temperature_values", "Temperature Values")
+    lang.write(f"{configKey}.temperature_values.hot_fluid_temp", "Hot Fluid Temp")
+    lang.write(f"{configKey}.temperature_values.cold_fluid_temp", "Cold Fluid Temp")
+    lang.write(f"{configKey}.temperature_values.hot_item_temp", "Hot Item Temp (TFC heat)")
+    # "Effect Handling Category
+    lang.newLine()
+    lang.writeComment("Effect Handling Category")
+    lang.write(f"{configKey}.effect_handling", "Effect Handling")
+    lang.write(f"{configKey}.effect_handling.toss_item", "Toss Hot Items")
+    lang.write(f"{configKey}.effect_handling.handle_hot_item", "Enable Hot Item Effects")
+    lang.write(f"{configKey}.effect_handling.handle_hot_fluid", "Enable Hot Fluid Effects")
+    lang.write(f"{configKey}.effect_handling.handle_cold_fluid", "Enable Cold Fluid Effects")
+    lang.write(f"{configKey}.effect_handling.handle_gas", "Enable Gaseous Fluid Effects")
+    lang.write(f"{configKey}.effect_handling.replace_broken_hot_holder", "Replace Broken Hot Holders")
+    lang.write(f"{configKey}.effect_handling.damage_rate", "Damage Rate")
+    lang.write(f"{configKey}.effect_handling.check_item_container_contents", "Check Item Container Contents")
+    lang.write(f"{configKey}.effect_handling.container_depth_limit", "Item Container Depth Limit")
+    # No Category Config
+    lang.newLine()
+    lang.writeComment("No Category Config")
+    lang.write(f"{configKey}.render_effect_tooltip", "Render Effect Tooltip")
+
 
 def main() -> None:
     os.chdir("../src/main/resources/assets/hotornot/")

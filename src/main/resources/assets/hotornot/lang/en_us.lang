@@ -38,3 +38,31 @@ item.hotornot.metal.tongs.blue_steel.name=Blue Steel Tongs
 item.hotornot.metal.tongs_jaw.blue_steel.name=Blue Steel Tongs Jaw Piece
 item.hotornot.metal.tongs.red_steel.name=Red Steel Tongs
 item.hotornot.metal.tongs_jaw.red_steel.name=Red Steel Tongs Jaw Piece
+## Config
+# Manual Entries Category
+config.hotornot.manual_entries=Manual Entries
+config.hotornot.manual_entries.hot_item_additions=Hot Items
+config.hotornot.manual_entries.cold_item_additions=Cold Items
+config.hotornot.manual_entries.gaseous_item_additions=Gaseous Items
+config.hotornot.manual_entries.item_removals=Item Exclusions
+
+# Temperature Values Category
+config.hotornot.temperature_values=Temperature Values
+config.hotornot.temperature_values.hot_fluid_temp=Hot Fluid Temp
+config.hotornot.temperature_values.cold_fluid_temp=Cold Fluid Temp
+config.hotornot.temperature_values.hot_item_temp=Hot Item Temp (TFC heat)
+
+# Effect Handling Category
+config.hotornot.effect_handling=Effect Handling
+config.hotornot.effect_handling.toss_item=Toss Hot Items
+config.hotornot.effect_handling.handle_hot_item=Enable Hot Item Effects
+config.hotornot.effect_handling.handle_hot_fluid=Enable Hot Fluid Effects
+config.hotornot.effect_handling.handle_cold_fluid=Enable Cold Fluid Effects
+config.hotornot.effect_handling.handle_gas=Enable Gaseous Fluid Effects
+config.hotornot.effect_handling.replace_broken_hot_holder=Replace Broken Hot Holders
+config.hotornot.effect_handling.damage_rate=Damage Rate
+config.hotornot.effect_handling.check_item_container_contents=Check Item Container Contents
+config.hotornot.effect_handling.container_depth_limit=Item Container Depth Limit
+
+# No Category Config
+config.hotornot.render_effect_tooltip=Render Effect Tooltip
