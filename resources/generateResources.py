@@ -30,9 +30,10 @@ def generateLang() -> None:
     lang = Lang("en_us")
 
     lang.writeHeader("Tooltips")
-    lang.write("tooltip.hotornot.toohot", "Too hot to handle! Wear protection.")
-    lang.write("tooltip.hotornot.toocold", "Too cold to handle! Wear protection.")
-    lang.write("tooltip.hotornot.toolight", "Too light to handle!")
+    lang.write("tooltip.hotornot.toohot", "§cToo hot to handle! Wear protection.")
+    lang.write("tooltip.hotornot.item_hot", "§4Too hot to handle! Let it cool or wear protection.")
+    lang.write("tooltip.hotornot.toocold", "§bToo cold to handle! Wear protection.")
+    lang.write("tooltip.hotornot.toolight", "§eToo light to handle!")
     lang.write("tooltip.hotornot.hot_holder_tooltip", "Hold in the offhand to avoid negative effects")
     lang.newLine()
 

@@ -8,7 +8,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
@@ -36,7 +35,6 @@ public enum ItemEffect {
 		return fluidStack.getFluid().getTemperature(fluidStack) >= HotConfig.TEMPERATURE_VALUES.hotFluidTemp + 273;
 	},
 			player -> player.setFire(1),
-			TextFormatting.RED,
 			"tooltip.hotornot.toohot",
 			true),
 	HOT_ITEM(itemStack -> {
@@ -48,7 +46,6 @@ public enum ItemEffect {
 
 		return itemHeat.getTemperature() >= HotConfig.TEMPERATURE_VALUES.hotItemTemp;
 	}, player -> player.setFire(1),
-			TextFormatting.RED,
 			"tooltip.hotornot.item_hot",
 			true),
 	FLUID_COLD(itemStack -> {
@@ -71,7 +68,6 @@ public enum ItemEffect {
 				player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 21, 1));
 				player.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 21, 1));
 			},
-			TextFormatting.AQUA,
 			"tooltip.hotornot.toocold",
 			false),
 	FLUID_GAS(itemStack -> {
@@ -91,22 +87,17 @@ public enum ItemEffect {
 		return fluidStack.getFluid().isGaseous(fluidStack);
 	},
 			player -> player.addPotionEffect(new PotionEffect(MobEffects.LEVITATION, 21, 1)),
-			TextFormatting.YELLOW,
 			"tooltip.hotornot.toolight",
 			false);
 
 	public final Predicate<ItemStack> effectPredicate;
 	public final Consumer<EntityPlayer> interactPlayer;
-	public final TextFormatting color;
 	public final String tooltip;
-
 	public final boolean doToss;
 
-	ItemEffect(final Predicate<ItemStack> isValid, final Consumer<EntityPlayer> interactPlayer, final TextFormatting color,
-			final String tooltip, final boolean doToss) {
+	ItemEffect(final Predicate<ItemStack> isValid, final Consumer<EntityPlayer> interactPlayer, final String tooltip, final boolean doToss) {
 		this.effectPredicate = isValid;
 		this.interactPlayer = interactPlayer;
-		this.color = color;
 		this.tooltip = tooltip;
 		this.doToss = doToss;
 	}

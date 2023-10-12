@@ -1,7 +1,8 @@
 ## Tooltips
-tooltip.hotornot.toohot=Too hot to handle! Wear protection.
-tooltip.hotornot.toocold=Too cold to handle! Wear protection.
-tooltip.hotornot.toolight=Too light to handle!
+tooltip.hotornot.toohot=§cToo hot to handle! Wear protection.
+tooltip.hotornot.item_hot=§4Too hot to handle! Let it cool or wear protection.
+tooltip.hotornot.toocold=§bToo cold to handle! Wear protection.
+tooltip.hotornot.toolight=§eToo light to handle!
 tooltip.hotornot.hot_holder_tooltip=Hold in the offhand to avoid negative effects
 
 ## Creative Tab
