@@ -47,7 +47,7 @@ def generateLang() -> None:
     lang.newLine()
     lang.writeComment("Molds")
     lang.writeItem("hotornot.ceramics.unfired.mold.tongs_jaw", "Unfired Tongs Jaw Mold")
-    lang.writeItem("hotornot.ceramics.fired.mold.tongs_jaw", "Fired Tongs Jaw Mold")
+    lang.writeItem("hotornot.ceramics.fired.mold.tongs_jaw", "Tongs Jaw Mold")
     for moldMetal in MOLD_METALS:
         lang.writeItem(f"hotornot.ceramics.fired.mold.tongs_jaw.{moldMetal}", f"{TFC_METALS[moldMetal]} Tongs Jaw Mold")
     lang.newLine()

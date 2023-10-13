@@ -1,8 +1,8 @@
 ## Tooltips
-tooltip.hotornot.toohot=Â§cToo hot to handle! Wear protection.
-tooltip.hotornot.item_hot=Â§4Too hot to handle! Let it cool or wear protection.
-tooltip.hotornot.toocold=Â§bToo cold to handle! Wear protection.
-tooltip.hotornot.toolight=Â§eToo light to handle!
+tooltip.hotornot.toohot=§cToo hot to handle! Wear protection.
+tooltip.hotornot.item_hot=§4Too hot to handle! Let it cool or wear protection.
+tooltip.hotornot.toocold=§bToo cold to handle! Wear protection.
+tooltip.hotornot.toolight=§eToo light to handle!
 tooltip.hotornot.hot_holder_tooltip=Hold in the offhand to avoid negative effects
 
 ## Creative Tab
@@ -14,7 +14,7 @@ item.hotornot.mitts.name=Mitts
 
 # Molds
 item.hotornot.ceramics.unfired.mold.tongs_jaw.name=Unfired Tongs Jaw Mold
-item.hotornot.ceramics.fired.mold.tongs_jaw.name=Fired Tongs Jaw Mold
+item.hotornot.ceramics.fired.mold.tongs_jaw.name=Tongs Jaw Mold
 item.hotornot.ceramics.fired.mold.tongs_jaw.copper.name=Copper Tongs Jaw Mold
 item.hotornot.ceramics.fired.mold.tongs_jaw.bronze.name=Bronze Tongs Jaw Mold
 item.hotornot.ceramics.fired.mold.tongs_jaw.bismuth_bronze.name=Bismuth Bronze Tongs Jaw Mold
