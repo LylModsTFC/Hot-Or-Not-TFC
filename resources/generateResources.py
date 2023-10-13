@@ -30,9 +30,10 @@ def generateLang() -> None:
     lang = Lang("en_us")
 
     lang.writeHeader("Tooltips")
-    lang.write("tooltip.hotornot.toohot", "Too hot to handle! Wear protection.")
-    lang.write("tooltip.hotornot.toocold", "Too cold to handle! Wear protection.")
-    lang.write("tooltip.hotornot.toolight", "Too light to handle!")
+    lang.write("tooltip.hotornot.toohot", "§cToo hot to handle! Wear protection.")
+    lang.write("tooltip.hotornot.item_hot", "§4Too hot to handle! Let it cool or wear protection.")
+    lang.write("tooltip.hotornot.toocold", "§bToo cold to handle! Wear protection.")
+    lang.write("tooltip.hotornot.toolight", "§eToo light to handle!")
     lang.write("tooltip.hotornot.hot_holder_tooltip", "Hold in the offhand to avoid negative effects")
     lang.newLine()
 
@@ -46,7 +47,7 @@ def generateLang() -> None:
     lang.newLine()
     lang.writeComment("Molds")
     lang.writeItem("hotornot.ceramics.unfired.mold.tongs_jaw", "Unfired Tongs Jaw Mold")
-    lang.writeItem("hotornot.ceramics.fired.mold.tongs_jaw", "Fired Tongs Jaw Mold")
+    lang.writeItem("hotornot.ceramics.fired.mold.tongs_jaw", "Tongs Jaw Mold")
     for moldMetal in MOLD_METALS:
         lang.writeItem(f"hotornot.ceramics.fired.mold.tongs_jaw.{moldMetal}", f"{TFC_METALS[moldMetal]} Tongs Jaw Mold")
     lang.newLine()

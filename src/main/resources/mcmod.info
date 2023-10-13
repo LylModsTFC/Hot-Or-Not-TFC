@@ -16,6 +16,7 @@
       "Traister101"
     ],
     "logoFile": "hotornottfc.png",
+    "useDependencyInformation": true,
     "requiredMods": [
       "tfc"
     ],

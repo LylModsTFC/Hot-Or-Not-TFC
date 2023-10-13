@@ -39,13 +39,13 @@ public final class ClientEvents {
 					assert itemHandler != null;
 
 					if (ItemEffect.contentsHaveEffect(itemHandler, effect)) {
-						event.getToolTip().add(effect.color + I18n.format(effect.tooltip));
+						event.getToolTip().add(I18n.format(effect.tooltip));
 					}
 				}
 				continue;
 			}
 
-			event.getToolTip().add(effect.color + I18n.format(effect.tooltip));
+			event.getToolTip().add(I18n.format(effect.tooltip));
 		}
 	}
 }
