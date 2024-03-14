@@ -1,0 +1,133 @@
+(перевёл AlpusFrostbite)
+## Tooltips
+tooltip.hotornot.item_hot=Слишком горячее! Наденьте защитное обмундирование или остудите.
+tooltip.hotornot.hot_holder_tooltip=Наденьте на вторую руку, чтобы избежать негативного эффекта.
+
+tooltip.hotornot.toohot=Слишком горячее! Наденьте защитное обмундирование.
+tooltip.hotornot.toocold=Слишком холодное! Наденьте защитное обмундирование.
+tooltip.hotornot.toolight=Слишком яркое! Наденьте защитное обмундирование.
+
+## Creative Tab
+itemGroup.hotornot=Hot or Not - TFC
+
+## Items
+item.hotornot.wooden_tongs.name=Деревянные клещи
+item.hotornot.mitts.name=Рукавицы
+# Molds
+item.hotornot.ceramics.unfired.mold.tongs_jaw.name=Необожженная форма для клещевины
+item.hotornot.ceramics.fired.mold.tongs_jaw.name=Форма для клещивины
+item.hotornot.ceramics.fired.mold.tongs_jaw.copper.name=Форма для клещивины (Медь)
+item.hotornot.ceramics.fired.mold.tongs_jaw.bronze.name=Форма для клещивины (Бронза)
+item.hotornot.ceramics.fired.mold.tongs_jaw.bismuth_bronze.name=Форма для клещивины (Висмутовая бронза)
+item.hotornot.ceramics.fired.mold.tongs_jaw.black_bronze.name=Форма для клещивины (Чёрной бронзы)
+
+# клещи
+item.hotornot.metal.tongs.copper.name=Медые клещи
+item.hotornot.metal.tongs_jaw.copper.name=Медая клещевина
+item.hotornot.metal.tongs.bronze.name=Бронзовые клещи
+item.hotornot.metal.tongs_jaw.bronze.name=Бронзовая клещевина
+item.hotornot.metal.tongs.bismuth_bronze.name=Клещи из висмутовой бронзы
+item.hotornot.metal.tongs_jaw.bismuth_bronze.name=Клещевина из висмутовой бронзы клещевина
+item.hotornot.metal.tongs.black_bronze.name=Клещи из чёрной бронзы
+item.hotornot.metal.tongs_jaw.black_bronze.name=Клещевина из чёрной бронзы
+item.hotornot.metal.tongs.wrought_iron.name=Клещи из кованного железа
+item.hotornot.metal.tongs_jaw.wrought_iron.name=Клещевина из кованного железа
+item.hotornot.metal.tongs.steel.name=Стальные клещи
+item.hotornot.metal.tongs_jaw.steel.name=Стальная клещевина
+item.hotornot.metal.tongs.black_steel.name=Клещи из чёрной стали
+item.hotornot.metal.tongs_jaw.black_steel.name=Клещевина из чёрной стали
+item.hotornot.metal.tongs.blue_steel.name=Клещи из красной стали
+item.hotornot.metal.tongs_jaw.blue_steel.name=Клещевина из красной стали
+item.hotornot.metal.tongs.red_steel.name=Клещи из красной стали
+item.hotornot.metal.tongs_jaw.red_steel.name=Клещевина из красной стали
+
+item.hotornot.metal.tongs_jaw.aluminium.name=Алюминиевая клещевина
+item.hotornot.metal.tongs_jaw.aluminium_brass.name=Клещевина из алюминивой латуни 
+item.hotornot.metal.tongs_jaw.antimony.name=Антимониевая клещевина
+item.hotornot.metal.tongs_jaw.ardite.name=Ардитовая клещевина
+item.hotornot.metal.tongs_jaw.beryllium.name=Бериллиумовая клещевина
+item.hotornot.metal.tongs_jaw.beryllium_copper.name=Клещевина из бериллиумной меди
+item.hotornot.metal.tongs_jaw.boron.name=Бориевая клещевина
+item.hotornot.metal.tongs_jaw.cobalt.name=Кобальтовая клещевина
+item.hotornot.metal.tongs_jaw.constantan.name=Константановая клещевина
+item.hotornot.metal.tongs_jaw.electrum.name=Элекртумовая клещевина
+item.hotornot.metal.tongs_jaw.ferroboron.name=Ферроборовая клещевина
+item.hotornot.metal.tongs_jaw.hsla_steel.name=Клещевина из высокопрочной низколегированной стали
+item.hotornot.metal.tongs_jaw.invar.name=Инваровая клещевина
+item.hotornot.metal.tongs_jaw.lithium.name=Литиевая клещевина
+item.hotornot.metal.tongs_jaw.magnesium.name=Магниевая клещевина
+item.hotornot.metal.tongs_jaw.magnesium_diboride.name=Клещевина из диборида магния
+item.hotornot.metal.tongs_jaw.manganese.name=Марганцевая клещевина
+item.hotornot.metal.tongs_jaw.manyullyn.name=Манулиновая клещевина
+item.hotornot.metal.tongs_jaw.mithril.name=Мифриловая клещевина
+item.hotornot.metal.tongs_jaw.nickel_silver.name=Нейзильберговая клещевина
+item.hotornot.metal.tongs_jaw.osmium.name=Осмиевая клещевина
+item.hotornot.metal.tongs_jaw.red_alloy.name=Клещевина из красного сплава
+item.hotornot.metal.tongs_jaw.thorium.name=Ториевая клещевина
+item.hotornot.metal.tongs_jaw.titanium.name=Титановая клещевина
+item.hotornot.metal.tongs_jaw.tough_alloy.name=Клещевина из сверхсплава
+item.hotornot.metal.tongs_jaw.tungsten.name=Вольфрамовая клещевина
+item.hotornot.metal.tongs_jaw.tungsten_steel.name=Клещевина из вольфрамовой стали
+item.hotornot.metal.tongs_jaw.uranium.name=Урановая клещевина
+item.hotornot.metal.tongs_jaw.zircaloy.name=Цирколовая клещевина
+item.hotornot.metal.tongs_jaw.zirconium.name=Циркониевая клещевина
+
+item.hotornot.metal.tongs.aluminium.name=Алюминиевые клещи
+item.hotornot.metal.tongs.aluminium_brass.name=Клещи из алюминивой латуни 
+item.hotornot.metal.tongs.antimony.name=Антимониевые клещи
+item.hotornot.metal.tongs.ardite.name=Ардитовые клещи
+item.hotornot.metal.tongs.beryllium.name=Бериллиумовые клещи
+item.hotornot.metal.tongs.beryllium_copper.name=Клещи из бериллиумной меди
+item.hotornot.metal.tongs.boron.name=Бориевые клещи
+item.hotornot.metal.tongs.cobalt.name=Кобальтовые клещи
+item.hotornot.metal.tongs.constantan.name=Константановые клещи
+item.hotornot.metal.tongs.electrum.name=Элекртумовые клещи
+item.hotornot.metal.tongs.ferroboron.name=Ферроборовые клещи
+item.hotornot.metal.tongs.hsla_steel.name=Клещи из высокопрочной низколегированной стали
+item.hotornot.metal.tongs.invar.name=Инваровые клещи
+item.hotornot.metal.tongs.lithium.name=Литиевые клещи
+item.hotornot.metal.tongs.magnesium.name=Магниевые клещи
+item.hotornot.metal.tongs.magnesium_diboride.name=Клещи из диборида магния
+item.hotornot.metal.tongs.manganese.name=Марганцевые клещи
+item.hotornot.metal.tongs.manyullyn.name=Манулиновые клещи
+item.hotornot.metal.tongs.mithril.name=Мифриловые клещи
+item.hotornot.metal.tongs.nickel_silver.name=Нейзильберговые клещи
+item.hotornot.metal.tongs.osmium.name=Осмиевые клещи
+item.hotornot.metal.tongs.red_alloy.name=Клещи из красного сплава
+item.hotornot.metal.tongs.thorium.name=Ториевые клещи
+item.hotornot.metal.tongs.titanium.name=Титановые клещи
+item.hotornot.metal.tongs.tough_alloy.name=Клещи из сверхсплава
+item.hotornot.metal.tongs.tungsten.name=Вольфрамовые клещи
+item.hotornot.metal.tongs.tungsten_steel.name=Клещи из вольфрамовой стали
+item.hotornot.metal.tongs.uranium.name=Урановые клещи
+item.hotornot.metal.tongs.zircaloy.name=Цирколовые клещи
+item.hotornot.metal.tongs.zirconium.name=Циркониевые клещи
+
+## Config
+# Manual Entries Category
+config.hotornot.manual_entries=Ручной ввод
+config.hotornot.manual_entries.hot_item_additions=Горячие вещи
+config.hotornot.manual_entries.cold_item_additions=Холодные вещи
+config.hotornot.manual_entries.gaseous_item_additions=Газообразные предметы
+config.hotornot.manual_entries.item_removals=Предметы исключения
+
+# Temperature Values Category
+config.hotornot.temperature_values=Значения температуры
+config.hotornot.temperature_values.hot_fluid_temp=Горячая температура для жидкости
+config.hotornot.temperature_values.cold_fluid_temp=Холодная температура для жидкости
+config.hotornot.temperature_values.hot_item_temp=Горячая температура для предметы(TFC нагревание)
+
+# Effect Handling Category
+config.hotornot.effect_handling=Эффекты мода
+config.hotornot.effect_handling.toss_item=Выбрасывание предмета
+config.hotornot.effect_handling.handle_hot_item=Включить эффекты для горячих предметов
+config.hotornot.effect_handling.handle_hot_fluid=Включить эффекты для горячих жидкостей
+config.hotornot.effect_handling.handle_cold_fluid=Включить эффекты для холодных предметов
+config.hotornot.effect_handling.handle_gas=Включить эффекты для холодных жидкостей жидкостей
+config.hotornot.effect_handling.replace_broken_hot_holder=Переставлять сломанный держатель в руках
+config.hotornot.effect_handling.damage_rate=Урон от эффектов мода
+config.hotornot.effect_handling.check_item_container_contents=Проверка содержимого контейнера
+config.hotornot.effect_handling.container_depth_limit=Ограничение толщины контейнера
+
+# No Category Config
+config.hotornot.render_effect_tooltip=Render Effect Tooltip
